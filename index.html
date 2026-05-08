@@ -301,6 +301,220 @@
       text-transform: uppercase;
       color: var(--muted);
     }
+
+    /* MODAL */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    @media (min-width: 600px) {
+      .modal-backdrop { align-items: center; }
+    }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px 20px 0 0;
+      width: 100%;
+      max-width: 540px;
+      max-height: 90vh;
+      overflow-y: auto;
+      transform: translateY(100%);
+      transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+
+    @media (min-width: 600px) {
+      .modal {
+        border-radius: 20px;
+        transform: translateY(20px);
+        opacity: 0;
+        transition: transform 0.25s ease, opacity 0.25s ease;
+      }
+    }
+
+    .modal-backdrop.open .modal {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .modal-drag-handle {
+      width: 36px;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      margin: 12px auto 0;
+    }
+
+    @media (min-width: 600px) {
+      .modal-drag-handle { display: none; }
+    }
+
+    .modal-visual {
+      height: 160px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+      margin: 12px 12px 0;
+      border-radius: 12px;
+    }
+
+    .modal-visual::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+    }
+
+    .modal-visual-name {
+      font-size: 1.3rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-align: center;
+      z-index: 1;
+      line-height: 1.2;
+    }
+
+    .modal-visual-cat {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      z-index: 1;
+      margin-top: 8px;
+      opacity: 0.85;
+    }
+
+    .modal-body {
+      padding: 20px;
+    }
+
+    .modal-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .modal-icon {
+      font-size: 1rem;
+      width: 20px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .modal-row-content {
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .modal-row-label {
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+    }
+
+    .modal-desc {
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.6;
+      padding: 14px;
+      background: var(--surface2);
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    .modal-badges {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .modal-price-badge {
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 999px;
+    }
+
+    .modal-price-badge.free {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .modal-price-badge.paid {
+      background: rgba(255,255,255,0.08);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    .modal-source-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(155,92,246,0.12);
+      color: var(--neon);
+      border: 1px solid rgba(155,92,246,0.3);
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .modal-source-btn:hover {
+      background: rgba(155,92,246,0.22);
+    }
+
+    .modal-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 16px 0;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      border: none;
+      color: var(--muted);
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      z-index: 10;
+    }
+
+    .modal-close:hover {
+      background: rgba(255,255,255,0.15);
+      color: var(--text);
+    }
   </style>
 </head>
 <body>
@@ -339,6 +553,37 @@
   <span class="fab-icon">+</span>
   Garoche ton event
 </a>
+
+<!-- EVENT MODAL -->
+<div class="modal-backdrop" id="modal-backdrop">
+  <div class="modal" id="modal">
+    <div class="modal-drag-handle"></div>
+    <button class="modal-close" id="modal-close">✕</button>
+    <div class="modal-visual" id="modal-visual">
+      <div class="modal-visual-name" id="modal-visual-name"></div>
+      <div class="modal-visual-cat" id="modal-visual-cat"></div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-badges" id="modal-badges"></div>
+      <div class="modal-row">
+        <div class="modal-icon">📅</div>
+        <div>
+          <div class="modal-row-label">Date & heure</div>
+          <div class="modal-row-content" id="modal-date"></div>
+        </div>
+      </div>
+      <div class="modal-row">
+        <div class="modal-icon">📍</div>
+        <div>
+          <div class="modal-row-label">Lieu</div>
+          <div class="modal-row-content" id="modal-venue"></div>
+        </div>
+      </div>
+      <div class="modal-divider"></div>
+      <div class="modal-desc" id="modal-desc"></div>
+    </div>
+  </div>
+</div>
 
 <script>
   const CAT_COLORS = {
@@ -492,7 +737,7 @@
     const isFree = ev.price === 'gratuit' || ev.price === '0' || ev.price === '' || !ev.price;
 
     return `
-      <div class="event-card">
+      <div class="event-card" data-id="${ev.id}">
         <div class="event-visual" style="background: ${color};">
           <div class="event-visual-name">${ev.name}</div>
           <div class="event-visual-cat">${catLabel.toUpperCase()}</div>
@@ -524,6 +769,13 @@
       `;
     } else {
       grid.innerHTML = filtered.map(renderCard).join('');
+      grid.querySelectorAll('.event-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const id = parseInt(card.dataset.id);
+          const ev = [...SAMPLE_POOL, ...SAMPLE_CASH].find(e => e.id === id);
+          if (ev) openModal(ev);
+        });
+      });
     }
 
     const label = document.getElementById('section-label');
@@ -581,6 +833,49 @@
       activeCat = chip.dataset.cat;
       render();
     });
+  });
+
+  // MODAL
+  function openModal(ev) {
+    const color = getColor(ev.category);
+    const catLabel = ev.subcat ? `${ev.category} · ${ev.subcat}` : ev.category;
+    const isFree = ev.price === 'gratuit' || ev.price === '0' || ev.price === '' || !ev.price;
+    const isCash = SAMPLE_CASH.find(e => e.id === ev.id);
+
+    document.getElementById('modal-visual').style.background = color;
+    document.getElementById('modal-visual-name').textContent = ev.name;
+    document.getElementById('modal-visual-cat').textContent = catLabel.toUpperCase();
+    document.getElementById('modal-date').textContent = formatDate(ev.date, ev.time);
+    document.getElementById('modal-venue').textContent = ev.venue;
+    document.getElementById('modal-desc').textContent = ev.desc;
+
+    const badges = document.getElementById('modal-badges');
+    let badgesHTML = `<span class="modal-price-badge ${isFree ? 'free' : 'paid'}">${isFree ? '✓ Gratuit' : ev.price}</span>`;
+    if (isCash) {
+      badgesHTML += `<span class="modal-price-badge paid" style="color:var(--gold);border-color:rgba(245,158,11,0.3);background:rgba(245,158,11,0.08);">Billetterie</span>`;
+    } else {
+      badgesHTML += `<span class="modal-price-badge paid" style="color:var(--neon);border-color:rgba(155,92,246,0.3);background:rgba(155,92,246,0.08);">Pool</span>`;
+    }
+    if (ev.source) {
+      badgesHTML += `<a href="${ev.source}" target="_blank" rel="noopener" class="modal-source-btn">↗ Source</a>`;
+    }
+    badges.innerHTML = badgesHTML;
+
+    document.getElementById('modal-backdrop').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('modal-backdrop').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('modal-close').addEventListener('click', closeModal);
+  document.getElementById('modal-backdrop').addEventListener('click', e => {
+    if (e.target === document.getElementById('modal-backdrop')) closeModal();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModal();
   });
 
   loadSubmitted();
