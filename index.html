@@ -585,160 +585,55 @@
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+  const { createClient } = supabase;
+  const db = createClient(
+    'https://wgewtmrtrygtroizhaxr.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnZXd0bXJ0cnlndHJvaXpoYXhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNDM5OTAsImV4cCI6MjA5MzgxOTk5MH0.z9Qe-9NezVenudqhE8SU5kPae4cX6_i3cCDH6DpM864'
+  );
+
   const CAT_COLORS = {
-    'Techno': '#9b5cf6',
-    'Jazz': '#f59e0b',
-    'Indie / Rock': '#10b981',
-    'Rave': '#ec4899',
-    'Comedy': '#f97316',
-    'Hip-Hop': '#ef4444',
-    'Électro': '#06b6d4',
-    'Punk': '#84cc16',
-    'Metal': '#64748b',
-    'Drum n Bass': '#8b5cf6',
-    'Dubstep': '#a78bfa',
-    'Open Mic': '#fbbf24',
-    'Open Jam': '#34d399',
+    'Techno': '#9b5cf6', 'Jazz': '#f59e0b', 'Indie / Rock': '#10b981',
+    'Rave': '#ec4899', 'Comedy': '#f97316', 'Hip-Hop': '#ef4444',
+    'Électro': '#06b6d4', 'Punk': '#84cc16', 'Metal': '#64748b',
+    'Drum n Bass': '#8b5cf6', 'Open Mic': '#fbbf24', 'Open Jam': '#34d399',
     'Autre': '#94a3b8',
   };
 
-  const SAMPLE_POOL = [
-    {
-      id: 1,
-      name: 'Nuit Fluorescente vol.3',
-      category: 'Techno',
-      subcat: 'Industrial',
-      date: '2026-05-10',
-      time: '22:00',
-      venue: 'La Sotterenea, Montréal',
-      price: 'gratuit',
-      desc: 'Trois floors, sound system Funktion-One. Lineup surprise. BYOB toléré en dehors.',
-      source: '',
-    },
-    {
-      id: 2,
-      name: 'Jazz Brunch du dimanche',
-      category: 'Jazz',
-      subcat: '',
-      date: '2026-05-12',
-      time: '11:00',
-      venue: 'Café Résonance, Mile End',
-      price: 'gratuit',
-      desc: 'Quartet acoustique, café inclus. Chapeau en fin de set.',
-      source: '',
-    },
-    {
-      id: 3,
-      name: 'Punk As Fuck #7',
-      category: 'Punk',
-      subcat: 'Hardcore',
-      date: '2026-05-09',
-      time: '20:00',
-      venue: 'Casa del Popolo',
-      price: '10$',
-      desc: '4 bands. All ages. On lave les verres nous-mêmes.',
-      source: '',
-    },
-    {
-      id: 4,
-      name: 'DnB Reloaded',
-      category: 'Drum n Bass',
-      subcat: 'Liquid',
-      date: '2026-05-11',
-      time: '23:00',
-      venue: 'Bar Le Ritz PDB',
-      price: '5$',
-      desc: 'Soirée vibes, pas de bullshit. Vibes 170bpm toute la nuit.',
-      source: '',
-    },
-    {
-      id: 5,
-      name: 'Open Mic Mardi',
-      category: 'Open Mic',
-      subcat: '',
-      date: '2026-05-13',
-      time: '19:00',
-      venue: 'L\'Île Noire, Plateau',
-      price: 'gratuit',
-      desc: '10 minutes par artiste, inscription sur place. Tous styles bienvenus.',
-      source: '',
-    },
-    {
-      id: 6,
-      name: 'Rave du Vieux-Port',
-      category: 'Rave',
-      subcat: '',
-      date: '2026-05-17',
-      time: '21:00',
-      venue: 'Entrepôt 77, Vieux-Port',
-      price: '15$',
-      desc: 'Outdoor si temps le permet. Laser show, 2 DJs.',
-      source: '',
-    },
-  ];
-
   const SAMPLE_CASH = [
-    {
-      id: 101,
-      name: 'Loud Luxury',
-      category: 'Électro',
-      subcat: '',
-      date: '2026-05-16',
-      time: '21:00',
-      venue: 'MTELUS, Montréal',
-      price: '65$+',
-      desc: 'Présenté par Evenko.',
-      source: 'https://evenko.ca',
-    },
-    {
-      id: 102,
-      name: 'The Weeknd – After Hours Tour',
-      category: 'Hip-Hop',
-      subcat: '',
-      date: '2026-06-01',
-      time: '20:00',
-      venue: 'Centre Bell, Montréal',
-      price: '120$+',
-      desc: 'Présenté par Live Nation / Ticketmaster.',
-      source: 'https://ticketmaster.ca',
-    },
-    {
-      id: 103,
-      name: 'Igloofest Édition Spéciale',
-      category: 'Techno',
-      subcat: '',
-      date: '2026-05-22',
-      time: '20:00',
-      venue: 'Quais du Vieux-Port',
-      price: '40$+',
-      desc: 'Présenté par Billet.ca.',
-      source: 'https://billet.ca',
-    },
+    { id: 'cash-1', name: 'Loud Luxury', category: 'Électro', subcat: '', date: '2026-05-16', time: '21:00', venue: 'MTELUS, Montréal', price: '65$+', desc: 'Présenté par Evenko.', source: 'https://evenko.ca', tab: 'cash' },
+    { id: 'cash-2', name: 'The Weeknd – After Hours Tour', category: 'Hip-Hop', subcat: '', date: '2026-06-01', time: '20:00', venue: 'Centre Bell, Montréal', price: '120$+', desc: 'Présenté par Live Nation / Ticketmaster.', source: 'https://ticketmaster.ca', tab: 'cash' },
+    { id: 'cash-3', name: 'Igloofest Édition Spéciale', category: 'Techno', subcat: '', date: '2026-05-22', time: '20:00', venue: 'Quais du Vieux-Port', price: '40$+', desc: 'Présenté par Billet.ca.', source: 'https://billet.ca', tab: 'cash' },
   ];
 
   let activeTab = 'pool';
   let activeCat = 'all';
+  let poolEvents = [];
+  let currentEv = null;
 
-  function getColor(cat) {
-    return CAT_COLORS[cat] || '#94a3b8';
-  }
+  function getColor(cat) { return CAT_COLORS[cat] || '#94a3b8'; }
 
   function formatDate(dateStr, timeStr) {
     if (!dateStr) return '';
     const d = new Date(dateStr + 'T00:00:00');
-    const opts = { weekday: 'short', month: 'short', day: 'numeric' };
-    return d.toLocaleDateString('fr-CA', opts) + (timeStr ? ' · ' + timeStr : '');
+    return d.toLocaleDateString('fr-CA', { weekday: 'short', month: 'short', day: 'numeric' }) + (timeStr ? ' · ' + timeStr : '');
+  }
+
+  function isFreePrice(price) {
+    return !price || price === 'gratuit' || price === '0';
   }
 
   function renderCard(ev) {
     const color = getColor(ev.category);
     const catLabel = ev.subcat ? `${ev.category} · ${ev.subcat}` : ev.category;
-    const isFree = ev.price === 'gratuit' || ev.price === '0' || ev.price === '' || !ev.price;
-
+    const free = isFreePrice(ev.price);
+    const cashBadge = ev.tab === 'cash'
+      ? `<span class="pool-badge" style="border-color:rgba(245,158,11,0.3);color:var(--gold);background:rgba(245,158,11,0.1);">Billetterie</span>`
+      : `<span class="pool-badge">Pool</span>`;
     return `
       <div class="event-card" data-id="${ev.id}">
-        <div class="event-visual" style="background: ${color};">
+        <div class="event-visual" style="background:${color};">
           <div class="event-visual-name">${ev.name}</div>
           <div class="event-visual-cat">${catLabel.toUpperCase()}</div>
         </div>
@@ -746,42 +641,55 @@
           <div class="event-meta">${formatDate(ev.date, ev.time)} · ${ev.venue}</div>
           <div class="event-desc">${ev.desc}</div>
           <div class="event-footer">
-            <span class="price-badge ${isFree ? 'free' : ''}">${isFree ? 'Gratuit' : ev.price}</span>
-            ${activeTab === 'pool' ? '<span class="pool-badge">Pool</span>' : '<span class="pool-badge" style="border-color:rgba(245,158,11,0.3);color:var(--gold);background:rgba(245,158,11,0.1);">Billetterie</span>'}
+            <span class="price-badge ${free ? 'free' : ''}">${free ? 'Gratuit' : ev.price}</span>
+            ${cashBadge}
           </div>
         </div>
-      </div>
-    `;
+      </div>`;
   }
 
-  function render() {
-    const data = activeTab === 'pool' ? SAMPLE_POOL : SAMPLE_CASH;
-    const filtered = activeCat === 'all' ? data : data.filter(e => e.category === activeCat);
+  function showLoading() {
+    document.getElementById('events-grid').innerHTML = `
+      <div class="empty">
+        <div class="empty-icon" style="animation:pulse 1.5s infinite">🌊</div>
+        <div class="empty-title">Chargement...</div>
+      </div>`;
+  }
 
+  function showError() {
+    document.getElementById('events-grid').innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">⚠️</div>
+        <div class="empty-title">Impossible de charger les events</div>
+        <div>Vérifie ta connexion et réessaie.</div>
+      </div>`;
+  }
+
+  function renderGrid(data) {
+    const filtered = activeCat === 'all' ? data : data.filter(e => e.category === activeCat);
     const grid = document.getElementById('events-grid');
+
     if (filtered.length === 0) {
       grid.innerHTML = `
         <div class="empty">
           <div class="empty-icon">🌑</div>
-          <div class="empty-title">Rien ce soir dans cette catégorie</div>
+          <div class="empty-title">Rien dans cette catégorie</div>
           <div>Sois le premier à garocher un event.</div>
-        </div>
-      `;
+        </div>`;
     } else {
       grid.innerHTML = filtered.map(renderCard).join('');
       grid.querySelectorAll('.event-card').forEach(card => {
         card.addEventListener('click', () => {
-          const id = parseInt(card.dataset.id);
-          const ev = [...SAMPLE_POOL, ...SAMPLE_CASH].find(e => e.id === id);
+          const id = card.dataset.id;
+          const ev = [...poolEvents, ...SAMPLE_CASH].find(e => String(e.id) === id);
           if (ev) openModal(ev);
         });
       });
     }
 
-    const label = document.getElementById('section-label');
-    label.textContent = activeTab === 'pool' ? 'Events de la communauté' : 'Billetterie officielle';
+    document.getElementById('section-label').textContent =
+      activeTab === 'pool' ? 'Events de la communauté' : 'Billetterie officielle';
 
-    // update filter chip colors
     document.querySelectorAll('.filter-chip').forEach(chip => {
       const cat = chip.dataset.cat;
       if (chip.classList.contains('active') && cat !== 'all') {
@@ -800,16 +708,24 @@
     });
   }
 
-  // Load submitted events from localStorage
-  function loadSubmitted() {
-    try {
-      const saved = JSON.parse(localStorage.getItem('nightpool_events') || '[]');
-      saved.forEach(ev => {
-        if (!SAMPLE_POOL.find(e => e.id === ev.id)) {
-          SAMPLE_POOL.unshift(ev);
-        }
-      });
-    } catch(e) {}
+  async function loadPool() {
+    showLoading();
+    const { data, error } = await db
+      .from('events')
+      .select('*')
+      .order('date', { ascending: true });
+
+    if (error) { showError(); return; }
+    poolEvents = data || [];
+    renderGrid(poolEvents);
+  }
+
+  function render() {
+    if (activeTab === 'pool') {
+      loadPool();
+    } else {
+      renderGrid(SAMPLE_CASH);
+    }
   }
 
   // Tab clicks
@@ -831,16 +747,17 @@
       document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
       chip.classList.add('active');
       activeCat = chip.dataset.cat;
-      render();
+      renderGrid(activeTab === 'pool' ? poolEvents : SAMPLE_CASH);
     });
   });
 
   // MODAL
   function openModal(ev) {
+    currentEv = ev;
     const color = getColor(ev.category);
     const catLabel = ev.subcat ? `${ev.category} · ${ev.subcat}` : ev.category;
-    const isFree = ev.price === 'gratuit' || ev.price === '0' || ev.price === '' || !ev.price;
-    const isCash = SAMPLE_CASH.find(e => e.id === ev.id);
+    const free = isFreePrice(ev.price);
+    const isCash = ev.tab === 'cash';
 
     document.getElementById('modal-visual').style.background = color;
     document.getElementById('modal-visual-name').textContent = ev.name;
@@ -849,17 +766,14 @@
     document.getElementById('modal-venue').textContent = ev.venue;
     document.getElementById('modal-desc').textContent = ev.desc;
 
-    const badges = document.getElementById('modal-badges');
-    let badgesHTML = `<span class="modal-price-badge ${isFree ? 'free' : 'paid'}">${isFree ? '✓ Gratuit' : ev.price}</span>`;
-    if (isCash) {
-      badgesHTML += `<span class="modal-price-badge paid" style="color:var(--gold);border-color:rgba(245,158,11,0.3);background:rgba(245,158,11,0.08);">Billetterie</span>`;
-    } else {
-      badgesHTML += `<span class="modal-price-badge paid" style="color:var(--neon);border-color:rgba(155,92,246,0.3);background:rgba(155,92,246,0.08);">Pool</span>`;
-    }
+    let badgesHTML = `<span class="modal-price-badge ${free ? 'free' : 'paid'}">${free ? '✓ Gratuit' : ev.price}</span>`;
+    badgesHTML += isCash
+      ? `<span class="modal-price-badge paid" style="color:var(--gold);border-color:rgba(245,158,11,0.3);background:rgba(245,158,11,0.08);">Billetterie</span>`
+      : `<span class="modal-price-badge paid" style="color:var(--neon);border-color:rgba(155,92,246,0.3);background:rgba(155,92,246,0.08);">Pool</span>`;
     if (ev.source) {
       badgesHTML += `<a href="${ev.source}" target="_blank" rel="noopener" class="modal-source-btn">↗ Source</a>`;
     }
-    badges.innerHTML = badgesHTML;
+    document.getElementById('modal-badges').innerHTML = badgesHTML;
 
     document.getElementById('modal-backdrop').classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -874,11 +788,8 @@
   document.getElementById('modal-backdrop').addEventListener('click', e => {
     if (e.target === document.getElementById('modal-backdrop')) closeModal();
   });
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeModal();
-  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-  loadSubmitted();
   render();
 </script>
 </body>

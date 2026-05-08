@@ -422,6 +422,7 @@
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
   const CATEGORIES = {
     'Techno':        { color: '#9b5cf6', subs: ['Industrial', 'Acid', 'Hard Techno', 'Minimal', 'Ambient Techno'] },
@@ -548,8 +549,15 @@
     document.getElementById('preview-meta').textContent = metaParts.join(' · ') || 'Date · Lieu';
   }
 
+  // Supabase
+  const { createClient } = supabase;
+  const db = createClient(
+    'https://wgewtmrtrygtroizhaxr.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnZXd0bXJ0cnlndHJvaXpoYXhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNDM5OTAsImV4cCI6MjA5MzgxOTk5MH0.z9Qe-9NezVenudqhE8SU5kPae4cX6_i3cCDH6DpM864'
+  );
+
   // Submit
-  document.getElementById('submit-btn').addEventListener('click', () => {
+  document.getElementById('submit-btn').addEventListener('click', async () => {
     const name = document.getElementById('f-name').value.trim();
     const date = document.getElementById('f-date').value;
     const venue = document.getElementById('f-venue').value.trim();
@@ -560,30 +568,34 @@
       return;
     }
 
+    const btn = document.getElementById('submit-btn');
+    btn.textContent = 'Envoi en cours...';
+    btn.disabled = true;
+
+    const d = new Date(date);
     const priceVal = selectedPrice === 'gratuit'
       ? 'gratuit'
       : (document.getElementById('f-price').value.trim() || 'payant');
 
-    const d = new Date(date);
-    const event = {
-      id: Date.now(),
+    const { error } = await db.from('events').insert({
       name,
       category: selectedCat,
-      subcat: selectedSub,
+      subcat: selectedSub || null,
       date: d.toISOString().split('T')[0],
       time: d.toLocaleTimeString('fr-CA', { hour: '2-digit', minute: '2-digit' }),
       venue,
       price: priceVal,
       desc,
-      source: document.getElementById('f-source').value.trim(),
-    };
+      source: document.getElementById('f-source').value.trim() || null,
+      tab: 'pool',
+    });
 
-    // Save to localStorage
-    try {
-      const existing = JSON.parse(localStorage.getItem('nightpool_events') || '[]');
-      existing.unshift(event);
-      localStorage.setItem('nightpool_events', JSON.stringify(existing));
-    } catch(e) {}
+    if (error) {
+      alert('Erreur lors de la soumission. Réessaie dans quelques secondes.');
+      btn.textContent = 'Garoche dans le Pool';
+      btn.disabled = false;
+      return;
+    }
 
     document.getElementById('form-section').style.display = 'none';
     document.getElementById('success-screen').classList.add('visible');
