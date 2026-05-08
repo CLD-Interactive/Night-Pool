@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Night Pool</title>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #111118;
+      --surface2: #1a1a24;
+      --border: #2a2a3a;
+      --text: #e0e0f0;
+      --muted: #6b6b8a;
+      --neon: #9b5cf6;
+      --neon-glow: rgba(155, 92, 246, 0.4);
+      --cyan: #06b6d4;
+      --gold: #f59e0b;
+
+      --techno: #9b5cf6;
+      --jazz: #f59e0b;
+      --indie: #10b981;
+      --rave: #ec4899;
+      --comedy: #f97316;
+      --hiphop: #ef4444;
+      --electro: #06b6d4;
+      --punk: #84cc16;
+      --metal: #64748b;
+      --dnb: #8b5cf6;
+      --openmic: #fbbf24;
+      --openjam: #34d399;
+      --autre: #94a3b8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    header {
+      padding: 24px 20px 0;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .app-title {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      background: linear-gradient(135deg, #fff 0%, var(--neon) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .app-sub {
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-top: 2px;
+    }
+
+    /* TABS */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      padding: 20px 20px 0;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .tab {
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      transition: all 0.2s;
+    }
+
+    .tab.active {
+      background: var(--neon);
+      border-color: var(--neon);
+      color: #fff;
+      box-shadow: 0 0 16px var(--neon-glow);
+    }
+
+    .tab.cash {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .tab.cash.active {
+      background: var(--gold);
+      color: #000;
+      box-shadow: 0 0 16px rgba(245, 158, 11, 0.4);
+    }
+
+    /* FILTERS */
+    .filters {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      padding: 14px 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .filter-chip {
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      transition: all 0.2s;
+    }
+
+    .filter-chip.active {
+      color: #fff;
+      border-color: currentColor;
+    }
+
+    /* GRID */
+    .events-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+      padding: 0 20px 100px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* EVENT CARD */
+    .event-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .event-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    }
+
+    .event-visual {
+      height: 120px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .event-visual::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: inherit;
+      filter: brightness(0.4);
+      z-index: 0;
+    }
+
+    .event-visual-name {
+      font-size: 1rem;
+      font-weight: 800;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      z-index: 1;
+      line-height: 1.2;
+    }
+
+    .event-visual-cat {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      z-index: 1;
+      margin-top: 6px;
+      opacity: 0.8;
+    }
+
+    .event-body {
+      padding: 12px 14px;
+    }
+
+    .event-meta {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .event-desc {
+      font-size: 0.82rem;
+      color: var(--text);
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .event-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .price-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      color: var(--muted);
+    }
+
+    .price-badge.free {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+    }
+
+    .pool-badge {
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(155, 92, 246, 0.15);
+      color: var(--neon);
+      border: 1px solid rgba(155, 92, 246, 0.3);
+    }
+
+    /* EMPTY STATE */
+    .empty {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+    }
+
+    .empty-icon { font-size: 3rem; margin-bottom: 12px; }
+    .empty-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; color: var(--text); }
+
+    /* FAB */
+    .fab {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--neon);
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 14px 32px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 0 32px var(--neon-glow), 0 4px 20px rgba(0,0,0,0.5);
+      transition: box-shadow 0.2s, transform 0.2s;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .fab:hover {
+      box-shadow: 0 0 48px var(--neon-glow), 0 6px 24px rgba(0,0,0,0.6);
+      transform: translateX(-50%) translateY(-2px);
+    }
+
+    .fab-icon {
+      font-size: 1.4rem;
+      font-weight: 300;
+      line-height: 1;
+    }
+
+    /* SECTION LABEL */
+    .section-label {
+      padding: 8px 20px 4px;
+      max-width: 900px;
+      margin: 0 auto;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="app-title">Night Pool</div>
+  <div class="app-sub">Trouve ce qui se passe vraiment ce soir.</div>
+</header>
+
+<div class="tabs">
+  <button class="tab active" data-tab="pool">Pool</button>
+  <button class="tab cash" data-tab="cash">Les gros plein de cash</button>
+</div>
+
+<div class="filters" id="filters">
+  <button class="filter-chip active" data-cat="all">Tout</button>
+  <button class="filter-chip" data-cat="Techno">Techno</button>
+  <button class="filter-chip" data-cat="Jazz">Jazz</button>
+  <button class="filter-chip" data-cat="Indie / Rock">Indie / Rock</button>
+  <button class="filter-chip" data-cat="Rave">Rave</button>
+  <button class="filter-chip" data-cat="Comedy">Comedy</button>
+  <button class="filter-chip" data-cat="Hip-Hop">Hip-Hop</button>
+  <button class="filter-chip" data-cat="Électro">Électro</button>
+  <button class="filter-chip" data-cat="Punk">Punk</button>
+  <button class="filter-chip" data-cat="Metal">Metal</button>
+  <button class="filter-chip" data-cat="Drum n Bass">Drum n Bass</button>
+  <button class="filter-chip" data-cat="Open Mic">Open Mic</button>
+  <button class="filter-chip" data-cat="Open Jam">Open Jam</button>
+</div>
+
+<div class="section-label" id="section-label">Events de la communauté</div>
+
+<div class="events-grid" id="events-grid"></div>
+
+<a class="fab" href="submit.html">
+  <span class="fab-icon">+</span>
+  Garoche ton event
+</a>
+
+<script>
+  const CAT_COLORS = {
+    'Techno': '#9b5cf6',
+    'Jazz': '#f59e0b',
+    'Indie / Rock': '#10b981',
+    'Rave': '#ec4899',
+    'Comedy': '#f97316',
+    'Hip-Hop': '#ef4444',
+    'Électro': '#06b6d4',
+    'Punk': '#84cc16',
+    'Metal': '#64748b',
+    'Drum n Bass': '#8b5cf6',
+    'Dubstep': '#a78bfa',
+    'Open Mic': '#fbbf24',
+    'Open Jam': '#34d399',
+    'Autre': '#94a3b8',
+  };
+
+  const SAMPLE_POOL = [
+    {
+      id: 1,
+      name: 'Nuit Fluorescente vol.3',
+      category: 'Techno',
+      subcat: 'Industrial',
+      date: '2026-05-10',
+      time: '22:00',
+      venue: 'La Sotterenea, Montréal',
+      price: 'gratuit',
+      desc: 'Trois floors, sound system Funktion-One. Lineup surprise. BYOB toléré en dehors.',
+      source: '',
+    },
+    {
+      id: 2,
+      name: 'Jazz Brunch du dimanche',
+      category: 'Jazz',
+      subcat: '',
+      date: '2026-05-12',
+      time: '11:00',
+      venue: 'Café Résonance, Mile End',
+      price: 'gratuit',
+      desc: 'Quartet acoustique, café inclus. Chapeau en fin de set.',
+      source: '',
+    },
+    {
+      id: 3,
+      name: 'Punk As Fuck #7',
+      category: 'Punk',
+      subcat: 'Hardcore',
+      date: '2026-05-09',
+      time: '20:00',
+      venue: 'Casa del Popolo',
+      price: '10$',
+      desc: '4 bands. All ages. On lave les verres nous-mêmes.',
+      source: '',
+    },
+    {
+      id: 4,
+      name: 'DnB Reloaded',
+      category: 'Drum n Bass',
+      subcat: 'Liquid',
+      date: '2026-05-11',
+      time: '23:00',
+      venue: 'Bar Le Ritz PDB',
+      price: '5$',
+      desc: 'Soirée vibes, pas de bullshit. Vibes 170bpm toute la nuit.',
+      source: '',
+    },
+    {
+      id: 5,
+      name: 'Open Mic Mardi',
+      category: 'Open Mic',
+      subcat: '',
+      date: '2026-05-13',
+      time: '19:00',
+      venue: 'L\'Île Noire, Plateau',
+      price: 'gratuit',
+      desc: '10 minutes par artiste, inscription sur place. Tous styles bienvenus.',
+      source: '',
+    },
+    {
+      id: 6,
+      name: 'Rave du Vieux-Port',
+      category: 'Rave',
+      subcat: '',
+      date: '2026-05-17',
+      time: '21:00',
+      venue: 'Entrepôt 77, Vieux-Port',
+      price: '15$',
+      desc: 'Outdoor si temps le permet. Laser show, 2 DJs.',
+      source: '',
+    },
+  ];
+
+  const SAMPLE_CASH = [
+    {
+      id: 101,
+      name: 'Loud Luxury',
+      category: 'Électro',
+      subcat: '',
+      date: '2026-05-16',
+      time: '21:00',
+      venue: 'MTELUS, Montréal',
+      price: '65$+',
+      desc: 'Présenté par Evenko.',
+      source: 'https://evenko.ca',
+    },
+    {
+      id: 102,
+      name: 'The Weeknd – After Hours Tour',
+      category: 'Hip-Hop',
+      subcat: '',
+      date: '2026-06-01',
+      time: '20:00',
+      venue: 'Centre Bell, Montréal',
+      price: '120$+',
+      desc: 'Présenté par Live Nation / Ticketmaster.',
+      source: 'https://ticketmaster.ca',
+    },
+    {
+      id: 103,
+      name: 'Igloofest Édition Spéciale',
+      category: 'Techno',
+      subcat: '',
+      date: '2026-05-22',
+      time: '20:00',
+      venue: 'Quais du Vieux-Port',
+      price: '40$+',
+      desc: 'Présenté par Billet.ca.',
+      source: 'https://billet.ca',
+    },
+  ];
+
+  let activeTab = 'pool';
+  let activeCat = 'all';
+
+  function getColor(cat) {
+    return CAT_COLORS[cat] || '#94a3b8';
+  }
+
+  function formatDate(dateStr, timeStr) {
+    if (!dateStr) return '';
+    const d = new Date(dateStr + 'T00:00:00');
+    const opts = { weekday: 'short', month: 'short', day: 'numeric' };
+    return d.toLocaleDateString('fr-CA', opts) + (timeStr ? ' · ' + timeStr : '');
+  }
+
+  function renderCard(ev) {
+    const color = getColor(ev.category);
+    const catLabel = ev.subcat ? `${ev.category} · ${ev.subcat}` : ev.category;
+    const isFree = ev.price === 'gratuit' || ev.price === '0' || ev.price === '' || !ev.price;
+
+    return `
+      <div class="event-card">
+        <div class="event-visual" style="background: ${color};">
+          <div class="event-visual-name">${ev.name}</div>
+          <div class="event-visual-cat">${catLabel.toUpperCase()}</div>
+        </div>
+        <div class="event-body">
+          <div class="event-meta">${formatDate(ev.date, ev.time)} · ${ev.venue}</div>
+          <div class="event-desc">${ev.desc}</div>
+          <div class="event-footer">
+            <span class="price-badge ${isFree ? 'free' : ''}">${isFree ? 'Gratuit' : ev.price}</span>
+            ${activeTab === 'pool' ? '<span class="pool-badge">Pool</span>' : '<span class="pool-badge" style="border-color:rgba(245,158,11,0.3);color:var(--gold);background:rgba(245,158,11,0.1);">Billetterie</span>'}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function render() {
+    const data = activeTab === 'pool' ? SAMPLE_POOL : SAMPLE_CASH;
+    const filtered = activeCat === 'all' ? data : data.filter(e => e.category === activeCat);
+
+    const grid = document.getElementById('events-grid');
+    if (filtered.length === 0) {
+      grid.innerHTML = `
+        <div class="empty">
+          <div class="empty-icon">🌑</div>
+          <div class="empty-title">Rien ce soir dans cette catégorie</div>
+          <div>Sois le premier à garocher un event.</div>
+        </div>
+      `;
+    } else {
+      grid.innerHTML = filtered.map(renderCard).join('');
+    }
+
+    const label = document.getElementById('section-label');
+    label.textContent = activeTab === 'pool' ? 'Events de la communauté' : 'Billetterie officielle';
+
+    // update filter chip colors
+    document.querySelectorAll('.filter-chip').forEach(chip => {
+      const cat = chip.dataset.cat;
+      if (chip.classList.contains('active') && cat !== 'all') {
+        chip.style.background = getColor(cat) + '22';
+        chip.style.color = getColor(cat);
+        chip.style.borderColor = getColor(cat);
+      } else if (chip.classList.contains('active')) {
+        chip.style.background = 'rgba(155,92,246,0.15)';
+        chip.style.color = '#9b5cf6';
+        chip.style.borderColor = '#9b5cf6';
+      } else {
+        chip.style.background = '';
+        chip.style.color = '';
+        chip.style.borderColor = '';
+      }
+    });
+  }
+
+  // Load submitted events from localStorage
+  function loadSubmitted() {
+    try {
+      const saved = JSON.parse(localStorage.getItem('nightpool_events') || '[]');
+      saved.forEach(ev => {
+        if (!SAMPLE_POOL.find(e => e.id === ev.id)) {
+          SAMPLE_POOL.unshift(ev);
+        }
+      });
+    } catch(e) {}
+  }
+
+  // Tab clicks
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      activeTab = tab.dataset.tab;
+      activeCat = 'all';
+      document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      document.querySelector('.filter-chip[data-cat="all"]').classList.add('active');
+      render();
+    });
+  });
+
+  // Filter chips
+  document.querySelectorAll('.filter-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      activeCat = chip.dataset.cat;
+      render();
+    });
+  });
+
+  loadSubmitted();
+  render();
+</script>
+</body>
+</html>

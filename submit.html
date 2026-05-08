@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Garoche ton event – Night Pool</title>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #111118;
+      --surface2: #1a1a24;
+      --border: #2a2a3a;
+      --text: #e0e0f0;
+      --muted: #6b6b8a;
+      --neon: #9b5cf6;
+      --neon-glow: rgba(155, 92, 246, 0.4);
+      --cyan: #06b6d4;
+
+      --techno: #9b5cf6;
+      --jazz: #f59e0b;
+      --indie: #10b981;
+      --rave: #ec4899;
+      --comedy: #f97316;
+      --hiphop: #ef4444;
+      --electro: #06b6d4;
+      --punk: #84cc16;
+      --metal: #64748b;
+      --dnb: #8b5cf6;
+      --openmic: #fbbf24;
+      --openjam: #34d399;
+      --autre: #94a3b8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      min-height: 100vh;
+      padding-bottom: 60px;
+    }
+
+    .page {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      margin-bottom: 24px;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: var(--text); }
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 4px;
+    }
+
+    .page-sub {
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-bottom: 24px;
+    }
+
+    .page-sub a {
+      color: var(--neon);
+      text-decoration: none;
+    }
+
+    /* PREVIEW CARD */
+    .preview-card {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      margin-bottom: 28px;
+    }
+
+    .preview-visual {
+      height: 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background: var(--surface2);
+      transition: background 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .preview-visual::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+    }
+
+    .preview-name {
+      font-size: 1rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-align: center;
+      z-index: 1;
+      line-height: 1.2;
+    }
+
+    .preview-cat {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      z-index: 1;
+      margin-top: 6px;
+      opacity: 0.85;
+    }
+
+    .preview-meta {
+      background: var(--surface);
+      padding: 10px 14px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .preview-pool-tag {
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(155, 92, 246, 0.15);
+      color: var(--neon);
+      border: 1px solid rgba(155, 92, 246, 0.3);
+    }
+
+    /* FORM */
+    .form-group {
+      margin-bottom: 22px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    label .req { color: var(--neon); }
+    label .opt { color: var(--muted); font-weight: 400; font-size: 0.8rem; }
+
+    input[type="text"],
+    input[type="datetime-local"],
+    input[type="url"],
+    textarea {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      color: var(--text);
+      font-size: 0.9rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, textarea:focus {
+      border-color: var(--neon);
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: var(--muted);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    .row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    @media (max-width: 500px) {
+      .row-2 { grid-template-columns: 1fr; }
+    }
+
+    /* CHIP SELECTORS */
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      transition: all 0.15s;
+    }
+
+    .chip.selected {
+      color: #fff;
+    }
+
+    /* PRICE TOGGLE */
+    .price-toggle {
+      display: flex;
+      gap: 8px;
+    }
+
+    .price-btn {
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      transition: all 0.15s;
+    }
+
+    .price-btn.selected {
+      border-color: var(--cyan);
+      color: var(--cyan);
+      background: rgba(6, 182, 212, 0.1);
+    }
+
+    .price-detail {
+      margin-top: 10px;
+    }
+
+    /* DIVIDER */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 28px 0;
+    }
+
+    /* SUBMIT */
+    .submit-btn {
+      width: 100%;
+      padding: 16px;
+      background: var(--text);
+      color: var(--bg);
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .submit-btn:hover { opacity: 0.9; }
+
+    .submit-note {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 10px;
+    }
+
+    .submit-note a {
+      color: #ef4444;
+      text-decoration: none;
+    }
+
+    /* SUCCESS */
+    .success-screen {
+      display: none;
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .success-screen.visible { display: block; }
+
+    .success-icon {
+      font-size: 3rem;
+      margin-bottom: 16px;
+    }
+
+    .success-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .success-sub {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 28px;
+    }
+
+    .back-btn {
+      display: inline-block;
+      padding: 12px 28px;
+      background: var(--neon);
+      color: #fff;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 700;
+      box-shadow: 0 0 24px var(--neon-glow);
+    }
+
+    /* SUBCATS */
+    .subcat-section {
+      margin-top: 12px;
+      display: none;
+    }
+
+    .subcat-section.visible { display: block; }
+
+    .subcat-label {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <a href="index.html" class="back-link">← Retour au Pool</a>
+
+  <div id="form-section">
+    <h1>Garoche ton event</h1>
+    <p class="page-sub">Tout le monde équitable — <a href="#">zéro cash</a>, <a href="#">zéro gatekeeping</a></p>
+
+    <!-- PREVIEW -->
+    <div class="preview-card">
+      <div class="preview-visual" id="preview-visual">
+        <div class="preview-name" id="preview-name">Nom de ton event...</div>
+        <div class="preview-cat" id="preview-cat">Catégorie</div>
+      </div>
+      <div class="preview-meta">
+        <span id="preview-meta">Date · Lieu</span>
+        <span class="preview-pool-tag">Pool</span>
+      </div>
+    </div>
+
+    <!-- FORM -->
+    <div class="form-group">
+      <label>Nom de l'event <span class="req">*</span></label>
+      <input type="text" id="f-name" placeholder="Ex: Nuit Fluorescente vol.3" />
+    </div>
+
+    <div class="form-group">
+      <label>Catégorie <span class="req">*</span></label>
+      <div class="chips" id="cats"></div>
+
+      <div class="subcat-section" id="subcat-section">
+        <div class="subcat-label">Sous-genre (optionnel)</div>
+        <div class="chips" id="subcats"></div>
+      </div>
+    </div>
+
+    <div class="row-2">
+      <div class="form-group">
+        <label>Date <span class="req">*</span></label>
+        <input type="datetime-local" id="f-date" />
+      </div>
+      <div class="form-group">
+        <label>Lieu <span class="req">*</span></label>
+        <input type="text" id="f-venue" placeholder="Bar, salle, adresse..." />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Prix</label>
+      <div class="price-toggle">
+        <button class="price-btn selected" data-price="gratuit">Gratuit</button>
+        <button class="price-btn" data-price="payant">Payant</button>
+      </div>
+      <div class="price-detail" id="price-detail" style="display:none;">
+        <input type="text" id="f-price" placeholder="Ex: 10$, PAP, sliding scale, membres..." />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Description <span class="req">*</span></label>
+      <textarea id="f-desc" placeholder="Ambiance, lineup, infos importantes... Sois honnête, les gens apprécient."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Lien source <span class="opt">(optionnel)</span></label>
+      <input type="url" id="f-source" placeholder="Facebook, Instagram, Eventbrite..." />
+    </div>
+
+    <div class="divider"></div>
+
+    <button class="submit-btn" id="submit-btn">Garoche dans le Pool</button>
+    <p class="submit-note">
+      Ton event sera visible immédiatement.<br />
+      Contenu <a href="#">pornographique ou snuff</a> = rejeté. Tout le reste, on s'en fout.
+    </p>
+  </div>
+
+  <div class="success-screen" id="success-screen">
+    <div class="success-icon">🌊</div>
+    <div class="success-title">C'est dans le Pool !</div>
+    <div class="success-sub">Ton event est visible immédiatement.<br/>La communauté va le trouver.</div>
+    <a href="index.html" class="back-btn">Voir le Pool</a>
+  </div>
+</div>
+
+<script>
+  const CATEGORIES = {
+    'Techno':        { color: '#9b5cf6', subs: ['Industrial', 'Acid', 'Hard Techno', 'Minimal', 'Ambient Techno'] },
+    'Jazz':          { color: '#f59e0b', subs: ['Bebop', 'Fusion', 'Nu Jazz', 'Free Jazz', 'Latin Jazz'] },
+    'Indie / Rock':  { color: '#10b981', subs: ['Post-Rock', 'Garage', 'Shoegaze', 'Psychédélique', 'Math Rock'] },
+    'Rave':          { color: '#ec4899', subs: ['Old School', 'Happy Hardcore', 'Trance', 'Gabber'] },
+    'Comedy':        { color: '#f97316', subs: ['Stand-Up', 'Improv', 'Sketch', 'Open Mic Comedy'] },
+    'Hip-Hop':       { color: '#ef4444', subs: ['Rap', 'Trap', 'Boom Bap', 'R&B', 'Spoken Word'] },
+    'Électro':       { color: '#06b6d4', subs: ['House', 'Deep House', 'Tech House', 'Synthwave', 'EBM'] },
+    'Punk':          { color: '#84cc16', subs: ['Hardcore', 'Oi!', 'Post-Punk', 'Crust', 'Anarcho-Punk', 'Pop-Punk'] },
+    'Metal':         { color: '#64748b', subs: ['Death Metal', 'Black Metal', 'Doom', 'Sludge', 'Thrash', 'Prog Metal', 'Stoner'] },
+    'Drum n Bass':   { color: '#a78bfa', subs: ['Liquid', 'Neurofunk', 'Jump Up', 'Ragga DnB', 'Dubstep', 'Jungle'] },
+    'Open Mic':      { color: '#fbbf24', subs: ['Poésie', 'Musique', 'Comédie', 'Spoken Word', 'Mixte'] },
+    'Open Jam':      { color: '#34d399', subs: ['Blues', 'Jazz Jam', 'Rock Jam', 'Funk', 'Tout genre'] },
+    'Autre':         { color: '#94a3b8', subs: ['Expérimental', 'Classique', 'Folk', 'Soul', 'Reggae', 'World Music'] },
+  };
+
+  let selectedCat = '';
+  let selectedSub = '';
+  let selectedPrice = 'gratuit';
+
+  // Build category chips
+  const catsEl = document.getElementById('cats');
+  Object.entries(CATEGORIES).forEach(([cat, { color }]) => {
+    const btn = document.createElement('button');
+    btn.className = 'chip';
+    btn.textContent = cat;
+    btn.dataset.cat = cat;
+    btn.addEventListener('click', () => selectCat(cat));
+    catsEl.appendChild(btn);
+  });
+
+  function selectCat(cat) {
+    selectedCat = cat;
+    selectedSub = '';
+    const color = CATEGORIES[cat].color;
+
+    document.querySelectorAll('#cats .chip').forEach(c => {
+      c.classList.remove('selected');
+      c.style.borderColor = '';
+      c.style.background = '';
+      c.style.color = '';
+    });
+
+    const active = document.querySelector(`#cats .chip[data-cat="${cat}"]`);
+    active.classList.add('selected');
+    active.style.borderColor = color;
+    active.style.background = color + '22';
+    active.style.color = color;
+
+    // subcategories
+    const subs = CATEGORIES[cat].subs;
+    const subSection = document.getElementById('subcat-section');
+    const subsEl = document.getElementById('subcats');
+    subsEl.innerHTML = '';
+
+    if (subs && subs.length) {
+      subs.forEach(sub => {
+        const btn = document.createElement('button');
+        btn.className = 'chip';
+        btn.textContent = sub;
+        btn.dataset.sub = sub;
+        btn.addEventListener('click', () => selectSub(sub, color));
+        subsEl.appendChild(btn);
+      });
+      subSection.classList.add('visible');
+    } else {
+      subSection.classList.remove('visible');
+    }
+
+    updatePreview();
+  }
+
+  function selectSub(sub, color) {
+    selectedSub = sub;
+    document.querySelectorAll('#subcats .chip').forEach(c => {
+      c.classList.remove('selected');
+      c.style.borderColor = '';
+      c.style.background = '';
+      c.style.color = '';
+    });
+    const active = document.querySelector(`#subcats .chip[data-sub="${sub}"]`);
+    active.classList.add('selected');
+    active.style.borderColor = color;
+    active.style.background = color + '22';
+    active.style.color = color;
+    updatePreview();
+  }
+
+  // Price toggle
+  document.querySelectorAll('.price-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.price-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedPrice = btn.dataset.price;
+      document.getElementById('price-detail').style.display = selectedPrice === 'payant' ? 'block' : 'none';
+    });
+  });
+
+  // Live preview
+  document.getElementById('f-name').addEventListener('input', updatePreview);
+  document.getElementById('f-date').addEventListener('change', updatePreview);
+  document.getElementById('f-venue').addEventListener('input', updatePreview);
+
+  function updatePreview() {
+    const name = document.getElementById('f-name').value.trim() || 'Nom de ton event...';
+    const venue = document.getElementById('f-venue').value.trim();
+    const dateRaw = document.getElementById('f-date').value;
+    const color = selectedCat ? CATEGORIES[selectedCat].color : '#2a2a3a';
+    const catLabel = selectedCat
+      ? (selectedSub ? `${selectedCat} · ${selectedSub}` : selectedCat)
+      : 'Catégorie';
+
+    document.getElementById('preview-name').textContent = name;
+    document.getElementById('preview-cat').textContent = catLabel.toUpperCase();
+    document.getElementById('preview-visual').style.background = color;
+
+    let metaParts = [];
+    if (dateRaw) {
+      const d = new Date(dateRaw);
+      metaParts.push(d.toLocaleDateString('fr-CA', { weekday: 'short', month: 'short', day: 'numeric' }) + ' ' + d.toLocaleTimeString('fr-CA', { hour: '2-digit', minute: '2-digit' }));
+    }
+    if (venue) metaParts.push(venue);
+    document.getElementById('preview-meta').textContent = metaParts.join(' · ') || 'Date · Lieu';
+  }
+
+  // Submit
+  document.getElementById('submit-btn').addEventListener('click', () => {
+    const name = document.getElementById('f-name').value.trim();
+    const date = document.getElementById('f-date').value;
+    const venue = document.getElementById('f-venue').value.trim();
+    const desc = document.getElementById('f-desc').value.trim();
+
+    if (!name || !selectedCat || !date || !venue || !desc) {
+      alert('Remplis tous les champs obligatoires (*)');
+      return;
+    }
+
+    const priceVal = selectedPrice === 'gratuit'
+      ? 'gratuit'
+      : (document.getElementById('f-price').value.trim() || 'payant');
+
+    const d = new Date(date);
+    const event = {
+      id: Date.now(),
+      name,
+      category: selectedCat,
+      subcat: selectedSub,
+      date: d.toISOString().split('T')[0],
+      time: d.toLocaleTimeString('fr-CA', { hour: '2-digit', minute: '2-digit' }),
+      venue,
+      price: priceVal,
+      desc,
+      source: document.getElementById('f-source').value.trim(),
+    };
+
+    // Save to localStorage
+    try {
+      const existing = JSON.parse(localStorage.getItem('nightpool_events') || '[]');
+      existing.unshift(event);
+      localStorage.setItem('nightpool_events', JSON.stringify(existing));
+    } catch(e) {}
+
+    document.getElementById('form-section').style.display = 'none';
+    document.getElementById('success-screen').classList.add('visible');
+  });
+</script>
+</body>
+</html>
