@@ -639,7 +639,7 @@
         </div>
         <div class="event-body">
           <div class="event-meta">${formatDate(ev.date, ev.time)} · ${ev.venue}</div>
-          <div class="event-desc">${ev.desc}</div>
+          <div class="event-desc">${ev.description || ev.desc}</div>
           <div class="event-footer">
             <span class="price-badge ${free ? 'free' : ''}">${free ? 'Gratuit' : ev.price}</span>
             ${cashBadge}
@@ -764,7 +764,7 @@
     document.getElementById('modal-visual-cat').textContent = catLabel.toUpperCase();
     document.getElementById('modal-date').textContent = formatDate(ev.date, ev.time);
     document.getElementById('modal-venue').textContent = ev.venue;
-    document.getElementById('modal-desc').textContent = ev.desc;
+    document.getElementById('modal-desc').textContent = ev.description || ev.desc;
 
     let badgesHTML = `<span class="modal-price-badge ${free ? 'free' : 'paid'}">${free ? '✓ Gratuit' : ev.price}</span>`;
     badgesHTML += isCash
