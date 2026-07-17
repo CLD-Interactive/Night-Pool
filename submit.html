@@ -560,10 +560,17 @@
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnZXd0bXJ0cnlndHJvaXpoYXhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNDM5OTAsImV4cCI6MjA5MzgxOTk5MH0.z9Qe-9NezVenudqhE8SU5kPae4cX6_i3cCDH6DpM864'
   );
 
+  function randomUUID() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+      const r = Math.random() * 16 | 0;
+      return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+  }
+
   // Détection de doublon → retourne un group_id existant ou un nouveau UUID
   async function findGroupId(name, venue, dateStr) {
     const { data } = await db.from('events').select('id, name, venue, date, group_id');
-    if (!data || data.length === 0) return crypto.randomUUID();
+    if (!data || data.length === 0) return randomUUID();
 
     const fuse = new Fuse(data, {
       keys: ['name', 'venue'],
@@ -580,7 +587,7 @@
       if (dayDiff <= 1 && candidate.group_id) return candidate.group_id;
     }
 
-    return crypto.randomUUID();
+    return randomUUID();
   }
 
   // Submit
@@ -611,7 +618,7 @@
       try {
         groupId = await findGroupId(name, venue, dateOnly);
       } catch (e) {
-        groupId = crypto.randomUUID();
+        groupId = randomUUID();
       }
 
       const { error } = await db.from('events').insert({
