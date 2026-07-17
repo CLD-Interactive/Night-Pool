@@ -423,6 +423,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@7"></script>
 <script>
   const CATEGORIES = {
     'Techno':        { color: '#9b5cf6', subs: ['Industrial', 'Acid', 'Hard Techno', 'Minimal', 'Ambient Techno'] },
@@ -556,6 +557,29 @@
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnZXd0bXJ0cnlndHJvaXpoYXhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNDM5OTAsImV4cCI6MjA5MzgxOTk5MH0.z9Qe-9NezVenudqhE8SU5kPae4cX6_i3cCDH6DpM864'
   );
 
+  // Détection de doublon → retourne un group_id existant ou un nouveau UUID
+  async function findGroupId(name, venue, dateStr) {
+    const { data } = await db.from('events').select('id, name, venue, date, group_id');
+    if (!data || data.length === 0) return crypto.randomUUID();
+
+    const fuse = new Fuse(data, {
+      keys: ['name', 'venue'],
+      threshold: 0.45,
+      includeScore: true,
+    });
+
+    const results = fuse.search(name + ' ' + venue);
+    const eventDate = new Date(dateStr);
+
+    for (const result of results) {
+      const candidate = result.item;
+      const dayDiff = Math.abs((eventDate - new Date(candidate.date)) / 86400000);
+      if (dayDiff <= 1 && candidate.group_id) return candidate.group_id;
+    }
+
+    return crypto.randomUUID();
+  }
+
   // Submit
   document.getElementById('submit-btn').addEventListener('click', async () => {
     const name = document.getElementById('f-name').value.trim();
@@ -577,17 +601,21 @@
       ? 'gratuit'
       : (document.getElementById('f-price').value.trim() || 'payant');
 
+    const dateOnly = d.toISOString().split('T')[0];
+    const groupId = await findGroupId(name, venue, dateOnly);
+
     const { error } = await db.from('events').insert({
       name,
       category: selectedCat,
       subcat: selectedSub || null,
-      date: d.toISOString().split('T')[0],
+      date: dateOnly,
       time: d.toLocaleTimeString('fr-CA', { hour: '2-digit', minute: '2-digit' }),
       venue,
       price: priceVal,
       description: desc,
       source: document.getElementById('f-source').value.trim() || null,
       tab: 'pool',
+      group_id: groupId,
     });
 
     if (error) {

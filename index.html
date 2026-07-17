@@ -302,6 +302,129 @@
       color: var(--muted);
     }
 
+    /* VERSION BADGE ON CARD */
+    .version-count {
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    /* FLAG ROW IN MODAL */
+    .modal-flag-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 4px 0 20px;
+    }
+
+    .flag-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .flag-btn:hover:not(:disabled) {
+      border-color: #ef4444;
+      color: #ef4444;
+      background: rgba(239, 68, 68, 0.08);
+    }
+
+    .flag-btn.flagged {
+      border-color: #ef4444;
+      color: #ef4444;
+      background: rgba(239, 68, 68, 0.08);
+      cursor: default;
+    }
+
+    .flag-count {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .flag-count.has-flags { color: #ef4444; }
+
+    /* VERSIONS SECTION */
+    .modal-versions { margin-top: 4px; padding-bottom: 8px; }
+
+    .versions-toggle {
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-size: 0.82rem;
+      cursor: pointer;
+      padding: 8px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: inherit;
+      width: 100%;
+    }
+
+    .versions-toggle:hover { color: var(--text); }
+
+    .versions-list { display: none; }
+    .versions-list.open { display: block; }
+
+    .version-item {
+      background: var(--surface2);
+      border-radius: 10px;
+      padding: 12px;
+      margin-top: 8px;
+    }
+
+    .version-item-date {
+      font-size: 0.7rem;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .version-item-desc {
+      font-size: 0.85rem;
+      color: var(--text);
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+
+    .version-flag-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .flag-btn-sm {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+
+    .flag-btn-sm:hover:not(:disabled) {
+      border-color: #ef4444;
+      color: #ef4444;
+    }
+
+    .flag-btn-sm.flagged {
+      border-color: #ef4444;
+      color: #ef4444;
+      cursor: default;
+    }
+
     /* MODAL */
     .modal-backdrop {
       display: none;
@@ -581,6 +704,8 @@
       </div>
       <div class="modal-divider"></div>
       <div class="modal-desc" id="modal-desc"></div>
+      <div class="modal-flag-row" id="modal-flag-row"></div>
+      <div class="modal-versions" id="modal-versions"></div>
     </div>
   </div>
 </div>
@@ -602,15 +727,14 @@
   };
 
   const SAMPLE_CASH = [
-    { id: 'cash-1', name: 'Loud Luxury', category: 'Électro', subcat: '', date: '2026-05-16', time: '21:00', venue: 'MTELUS, Montréal', price: '65$+', desc: 'Présenté par Evenko.', source: 'https://evenko.ca', tab: 'cash' },
-    { id: 'cash-2', name: 'The Weeknd – After Hours Tour', category: 'Hip-Hop', subcat: '', date: '2026-06-01', time: '20:00', venue: 'Centre Bell, Montréal', price: '120$+', desc: 'Présenté par Live Nation / Ticketmaster.', source: 'https://ticketmaster.ca', tab: 'cash' },
-    { id: 'cash-3', name: 'Igloofest Édition Spéciale', category: 'Techno', subcat: '', date: '2026-05-22', time: '20:00', venue: 'Quais du Vieux-Port', price: '40$+', desc: 'Présenté par Billet.ca.', source: 'https://billet.ca', tab: 'cash' },
+    { id: 'cash-1', name: 'Loud Luxury', category: 'Électro', subcat: '', date: '2026-05-16', time: '21:00', venue: 'MTELUS, Montréal', price: '65$+', description: 'Présenté par Evenko.', source: 'https://evenko.ca', tab: 'cash' },
+    { id: 'cash-2', name: 'The Weeknd – After Hours Tour', category: 'Hip-Hop', subcat: '', date: '2026-06-01', time: '20:00', venue: 'Centre Bell, Montréal', price: '120$+', description: 'Présenté par Live Nation / Ticketmaster.', source: 'https://ticketmaster.ca', tab: 'cash' },
+    { id: 'cash-3', name: 'Igloofest Édition Spéciale', category: 'Techno', subcat: '', date: '2026-05-22', time: '20:00', venue: 'Quais du Vieux-Port', price: '40$+', description: 'Présenté par Billet.ca.', source: 'https://billet.ca', tab: 'cash' },
   ];
 
   let activeTab = 'pool';
   let activeCat = 'all';
-  let poolEvents = [];
-  let currentEv = null;
+  let poolGroups = [];
 
   function getColor(cat) { return CAT_COLORS[cat] || '#94a3b8'; }
 
@@ -620,29 +744,45 @@
     return d.toLocaleDateString('fr-CA', { weekday: 'short', month: 'short', day: 'numeric' }) + (timeStr ? ' · ' + timeStr : '');
   }
 
-  function isFreePrice(price) {
-    return !price || price === 'gratuit' || price === '0';
+  function isFreePrice(p) { return !p || p === 'gratuit' || p === '0'; }
+
+  function groupEvents(events) {
+    const map = {};
+    events.forEach(ev => {
+      const gid = ev.group_id || ev.id;
+      if (!map[gid]) map[gid] = [];
+      map[gid].push(ev);
+    });
+    Object.values(map).forEach(g =>
+      g.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+    );
+    return Object.values(map).sort((a, b) => new Date(a[0].date) - new Date(b[0].date));
   }
 
-  function renderCard(ev) {
+  function renderCard(group) {
+    const ev = group[0];
     const color = getColor(ev.category);
     const catLabel = ev.subcat ? `${ev.category} · ${ev.subcat}` : ev.category;
     const free = isFreePrice(ev.price);
-    const cashBadge = ev.tab === 'cash'
+    const isCash = ev.tab === 'cash';
+    const gid = ev.group_id || ev.id;
+    const versionBadge = group.length > 1
+      ? `<span class="version-count">${group.length} versions</span>` : '';
+    const rightBadge = isCash
       ? `<span class="pool-badge" style="border-color:rgba(245,158,11,0.3);color:var(--gold);background:rgba(245,158,11,0.1);">Billetterie</span>`
       : `<span class="pool-badge">Pool</span>`;
     return `
-      <div class="event-card" data-id="${ev.id}">
+      <div class="event-card" data-gid="${gid}">
         <div class="event-visual" style="background:${color};">
           <div class="event-visual-name">${ev.name}</div>
           <div class="event-visual-cat">${catLabel.toUpperCase()}</div>
         </div>
         <div class="event-body">
           <div class="event-meta">${formatDate(ev.date, ev.time)} · ${ev.venue}</div>
-          <div class="event-desc">${ev.description || ev.desc}</div>
+          <div class="event-desc">${ev.description || ''}</div>
           <div class="event-footer">
             <span class="price-badge ${free ? 'free' : ''}">${free ? 'Gratuit' : ev.price}</span>
-            ${cashBadge}
+            <div style="display:flex;gap:6px;align-items:center;">${versionBadge}${rightBadge}</div>
           </div>
         </div>
       </div>`;
@@ -650,23 +790,16 @@
 
   function showLoading() {
     document.getElementById('events-grid').innerHTML = `
-      <div class="empty">
-        <div class="empty-icon" style="animation:pulse 1.5s infinite">🌊</div>
-        <div class="empty-title">Chargement...</div>
-      </div>`;
+      <div class="empty"><div class="empty-icon">🌊</div><div class="empty-title">Chargement...</div></div>`;
   }
 
   function showError() {
     document.getElementById('events-grid').innerHTML = `
-      <div class="empty">
-        <div class="empty-icon">⚠️</div>
-        <div class="empty-title">Impossible de charger les events</div>
-        <div>Vérifie ta connexion et réessaie.</div>
-      </div>`;
+      <div class="empty"><div class="empty-icon">⚠️</div><div class="empty-title">Impossible de charger les events</div></div>`;
   }
 
-  function renderGrid(data) {
-    const filtered = activeCat === 'all' ? data : data.filter(e => e.category === activeCat);
+  function renderGrid(groups) {
+    const filtered = activeCat === 'all' ? groups : groups.filter(g => g[0].category === activeCat);
     const grid = document.getElementById('events-grid');
 
     if (filtered.length === 0) {
@@ -680,9 +813,10 @@
       grid.innerHTML = filtered.map(renderCard).join('');
       grid.querySelectorAll('.event-card').forEach(card => {
         card.addEventListener('click', () => {
-          const id = card.dataset.id;
-          const ev = [...poolEvents, ...SAMPLE_CASH].find(e => String(e.id) === id);
-          if (ev) openModal(ev);
+          const gid = card.dataset.gid;
+          const allGroups = activeTab === 'pool' ? poolGroups : SAMPLE_CASH.map(e => [e]);
+          const group = allGroups.find(g => (g[0].group_id || g[0].id) === gid);
+          if (group) openModal(group);
         });
       });
     }
@@ -710,25 +844,17 @@
 
   async function loadPool() {
     showLoading();
-    const { data, error } = await db
-      .from('events')
-      .select('*')
-      .order('date', { ascending: true });
-
+    const { data, error } = await db.from('events').select('*').order('date', { ascending: true });
     if (error) { showError(); return; }
-    poolEvents = data || [];
-    renderGrid(poolEvents);
+    poolGroups = groupEvents(data || []);
+    renderGrid(poolGroups);
   }
 
   function render() {
-    if (activeTab === 'pool') {
-      loadPool();
-    } else {
-      renderGrid(SAMPLE_CASH);
-    }
+    if (activeTab === 'pool') loadPool();
+    else renderGrid(SAMPLE_CASH.map(e => [e]));
   }
 
-  // Tab clicks
   document.querySelectorAll('.tab').forEach(tab => {
     tab.addEventListener('click', () => {
       document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -741,19 +867,62 @@
     });
   });
 
-  // Filter chips
   document.querySelectorAll('.filter-chip').forEach(chip => {
     chip.addEventListener('click', () => {
       document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
       chip.classList.add('active');
       activeCat = chip.dataset.cat;
-      renderGrid(activeTab === 'pool' ? poolEvents : SAMPLE_CASH);
+      renderGrid(activeTab === 'pool' ? poolGroups : SAMPLE_CASH.map(e => [e]));
     });
   });
 
+  // FLAG
+  async function flagVersion(eventId, btn, countEl) {
+    const key = `flagged_${eventId}`;
+    if (localStorage.getItem(key)) return;
+    btn.disabled = true;
+
+    const { data } = await db.from('events').select('flags').eq('id', eventId).single();
+    const newFlags = (data?.flags || 0) + 1;
+    const { error } = await db.from('events').update({ flags: newFlags }).eq('id', eventId);
+    if (error) { btn.disabled = false; return; }
+
+    localStorage.setItem(key, '1');
+    btn.classList.add('flagged');
+    btn.textContent = '🚩 Signalé';
+    if (countEl) {
+      countEl.textContent = `${newFlags} flag${newFlags > 1 ? 's' : ''}`;
+      countEl.classList.add('has-flags');
+    }
+    poolGroups.forEach(g => { const ev = g.find(e => e.id === eventId); if (ev) ev.flags = newFlags; });
+  }
+
+  function makeFlagBtn(ev, sm = false) {
+    const flagged = !!localStorage.getItem(`flagged_${ev.id}`);
+    const cls = sm ? 'flag-btn-sm' : 'flag-btn';
+    const flags = ev.flags || 0;
+    return `
+      <button class="${cls}${flagged ? ' flagged' : ''}" data-evid="${ev.id}"${flagged ? ' disabled' : ''}>
+        ${flagged ? '🚩 Signalé' : '🚩 Signaler'}
+      </button>
+      <span class="flag-count${flags > 0 ? ' has-flags' : ''}" data-fcount="${ev.id}">
+        ${flags > 0 ? `${flags} flag${flags > 1 ? 's' : ''}` : ''}
+      </span>`;
+  }
+
+  function bindFlagBtns(container, group) {
+    container.querySelectorAll('[data-evid]').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const eid = this.dataset.evid;
+        const countEl = container.querySelector(`[data-fcount="${eid}"]`);
+        flagVersion(eid, this, countEl);
+      });
+    });
+  }
+
   // MODAL
-  function openModal(ev) {
-    currentEv = ev;
+  function openModal(group) {
+    const ev = group[0];
     const color = getColor(ev.category);
     const catLabel = ev.subcat ? `${ev.category} · ${ev.subcat}` : ev.category;
     const free = isFreePrice(ev.price);
@@ -764,16 +933,59 @@
     document.getElementById('modal-visual-cat').textContent = catLabel.toUpperCase();
     document.getElementById('modal-date').textContent = formatDate(ev.date, ev.time);
     document.getElementById('modal-venue').textContent = ev.venue;
-    document.getElementById('modal-desc').textContent = ev.description || ev.desc;
+    document.getElementById('modal-desc').textContent = ev.description || '';
 
     let badgesHTML = `<span class="modal-price-badge ${free ? 'free' : 'paid'}">${free ? '✓ Gratuit' : ev.price}</span>`;
     badgesHTML += isCash
       ? `<span class="modal-price-badge paid" style="color:var(--gold);border-color:rgba(245,158,11,0.3);background:rgba(245,158,11,0.08);">Billetterie</span>`
       : `<span class="modal-price-badge paid" style="color:var(--neon);border-color:rgba(155,92,246,0.3);background:rgba(155,92,246,0.08);">Pool</span>`;
-    if (ev.source) {
-      badgesHTML += `<a href="${ev.source}" target="_blank" rel="noopener" class="modal-source-btn">↗ Source</a>`;
-    }
+    if (ev.source) badgesHTML += `<a href="${ev.source}" target="_blank" rel="noopener" class="modal-source-btn">↗ Source</a>`;
     document.getElementById('modal-badges').innerHTML = badgesHTML;
+
+    // Flag row (pool only)
+    const flagRow = document.getElementById('modal-flag-row');
+    if (!isCash && ev.id) {
+      flagRow.innerHTML = makeFlagBtn(ev, false);
+      flagRow.style.display = 'flex';
+      bindFlagBtns(flagRow, group);
+    } else {
+      flagRow.style.display = 'none';
+      flagRow.innerHTML = '';
+    }
+
+    // Older versions
+    const versionsEl = document.getElementById('modal-versions');
+    if (group.length > 1) {
+      const older = group.slice(1);
+      versionsEl.innerHTML = `
+        <button class="versions-toggle">
+          <span class="v-arrow">▸</span>
+          ${older.length} version${older.length > 1 ? 's' : ''} antérieure${older.length > 1 ? 's' : ''}
+        </button>
+        <div class="versions-list">
+          ${older.map(v => {
+            const d = new Date(v.created_at);
+            const label = d.toLocaleDateString('fr-CA', { month: 'short', day: 'numeric' }) + ' ' + d.toLocaleTimeString('fr-CA', { hour: '2-digit', minute: '2-digit' });
+            return `
+              <div class="version-item">
+                <div class="version-item-date">Soumis le ${label}</div>
+                <div class="version-item-desc">${v.description || ''}</div>
+                <div class="version-flag-row">${makeFlagBtn(v, true)}</div>
+              </div>`;
+          }).join('')}
+        </div>`;
+
+      const toggle = versionsEl.querySelector('.versions-toggle');
+      const list = versionsEl.querySelector('.versions-list');
+      const arrow = versionsEl.querySelector('.v-arrow');
+      toggle.addEventListener('click', () => {
+        list.classList.toggle('open');
+        arrow.textContent = list.classList.contains('open') ? '▾' : '▸';
+      });
+      bindFlagBtns(versionsEl, group);
+    } else {
+      versionsEl.innerHTML = '';
+    }
 
     document.getElementById('modal-backdrop').classList.add('open');
     document.body.style.overflow = 'hidden';
