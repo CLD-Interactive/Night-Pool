@@ -596,37 +596,45 @@
     btn.textContent = 'Envoi en cours...';
     btn.disabled = true;
 
-    const d = new Date(date);
-    const priceVal = selectedPrice === 'gratuit'
-      ? 'gratuit'
-      : (document.getElementById('f-price').value.trim() || 'payant');
+    try {
+      const d = new Date(date);
+      const priceVal = selectedPrice === 'gratuit'
+        ? 'gratuit'
+        : (document.getElementById('f-price').value.trim() || 'payant');
 
-    const dateOnly = d.toISOString().split('T')[0];
-    const groupId = await findGroupId(name, venue, dateOnly);
+      const dateOnly = d.toISOString().split('T')[0];
 
-    const { error } = await db.from('events').insert({
-      name,
-      category: selectedCat,
-      subcat: selectedSub || null,
-      date: dateOnly,
-      time: d.toLocaleTimeString('fr-CA', { hour: '2-digit', minute: '2-digit' }),
-      venue,
-      price: priceVal,
-      description: desc,
-      source: document.getElementById('f-source').value.trim() || null,
-      tab: 'pool',
-      group_id: groupId,
-    });
+      let groupId;
+      try {
+        groupId = await findGroupId(name, venue, dateOnly);
+      } catch (e) {
+        groupId = crypto.randomUUID();
+      }
 
-    if (error) {
+      const { error } = await db.from('events').insert({
+        name,
+        category: selectedCat,
+        subcat: selectedSub || null,
+        date: dateOnly,
+        time: d.toLocaleTimeString('fr-CA', { hour: '2-digit', minute: '2-digit' }),
+        venue,
+        price: priceVal,
+        description: desc,
+        source: document.getElementById('f-source').value.trim() || null,
+        tab: 'pool',
+        group_id: groupId,
+      });
+
+      if (error) throw error;
+
+      document.getElementById('form-section').style.display = 'none';
+      document.getElementById('success-screen').classList.add('visible');
+    } catch (e) {
+      console.error('Submit error:', e);
       alert('Erreur lors de la soumission. Réessaie dans quelques secondes.');
       btn.textContent = 'Garoche dans le Pool';
       btn.disabled = false;
-      return;
     }
-
-    document.getElementById('form-section').style.display = 'none';
-    document.getElementById('success-screen').classList.add('visible');
   });
 </script>
 </body>
