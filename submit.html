@@ -569,21 +569,23 @@
 
   // Détection de doublon → retourne un group_id existant ou un nouveau UUID
   async function findGroupId(name, venue, dateStr) {
+    if (typeof Fuse === 'undefined') return randomUUID();
+
     const { data } = await db.from('events').select('id, name, venue, date, group_id');
     if (!data || data.length === 0) return randomUUID();
 
     const fuse = new Fuse(data, {
-      keys: ['name', 'venue'],
-      threshold: 0.45,
+      keys: ['name'],
+      threshold: 0.6,
       includeScore: true,
     });
 
-    const results = fuse.search(name + ' ' + venue);
-    const eventDate = new Date(dateStr);
+    const results = fuse.search(name);
+    const eventDate = new Date(dateStr + 'T12:00:00');
 
     for (const result of results) {
       const candidate = result.item;
-      const dayDiff = Math.abs((eventDate - new Date(candidate.date)) / 86400000);
+      const dayDiff = Math.abs((eventDate - new Date(candidate.date + 'T12:00:00')) / 86400000);
       if (dayDiff <= 1 && candidate.group_id) return candidate.group_id;
     }
 
