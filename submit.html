@@ -586,7 +586,7 @@
     for (const result of results) {
       const candidate = result.item;
       const dayDiff = Math.abs((eventDate - new Date(candidate.date + 'T12:00:00')) / 86400000);
-      if (dayDiff <= 1 && candidate.group_id) return candidate.group_id;
+      if (dayDiff <= 1) return candidate.group_id || candidate.id;
     }
 
     return randomUUID();
