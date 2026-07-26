@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Garoche ton event – Night Pool</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rubik+Glitch&family=Rubik+Dirt&family=Bungee&family=Metal+Mania&family=Orbitron:wght@700&family=VT323&family=Bebas+Neue&family=Creepster&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #0a0a0f;
@@ -15,326 +17,95 @@
       --neon: #9b5cf6;
       --neon-glow: rgba(155, 92, 246, 0.4);
       --cyan: #06b6d4;
-
-      --techno: #9b5cf6;
-      --jazz: #f59e0b;
-      --indie: #10b981;
-      --rave: #ec4899;
-      --comedy: #f97316;
-      --hiphop: #ef4444;
-      --electro: #06b6d4;
-      --punk: #84cc16;
-      --metal: #64748b;
-      --dnb: #8b5cf6;
-      --openmic: #fbbf24;
-      --openjam: #34d399;
-      --autre: #94a3b8;
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      min-height: 100vh;
-      padding-bottom: 60px;
-    }
-
-    .page {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-
-    .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 0.85rem;
-      margin-bottom: 24px;
-      transition: color 0.2s;
-    }
-
+    body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; padding-bottom: 60px; }
+    .page { max-width: 600px; margin: 0 auto; padding: 20px; }
+    .back-link { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); text-decoration: none; font-size: 0.85rem; margin-bottom: 24px; transition: color 0.2s; }
     .back-link:hover { color: var(--text); }
+    h1 { font-size: 1.8rem; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 4px; }
+    .page-sub { color: var(--muted); font-size: 0.85rem; margin-bottom: 24px; }
+    .page-sub a { color: var(--neon); text-decoration: none; }
 
-    h1 {
-      font-size: 1.8rem;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      margin-bottom: 4px;
-    }
-
-    .page-sub {
-      color: var(--muted);
-      font-size: 0.85rem;
-      margin-bottom: 24px;
-    }
-
-    .page-sub a {
-      color: var(--neon);
-      text-decoration: none;
-    }
-
-    /* PREVIEW CARD */
-    .preview-card {
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      margin-bottom: 28px;
-    }
-
-    .preview-visual {
-      height: 100px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      background: var(--surface2);
-      transition: background 0.3s;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .preview-visual::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.45);
-    }
-
-    .preview-name {
-      font-size: 1rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      text-align: center;
-      z-index: 1;
-      line-height: 1.2;
-    }
-
-    .preview-cat {
-      font-size: 0.65rem;
-      font-weight: 600;
-      letter-spacing: 2px;
-      z-index: 1;
-      margin-top: 6px;
-      opacity: 0.85;
-    }
-
-    .preview-meta {
-      background: var(--surface);
-      padding: 10px 14px;
-      font-size: 0.8rem;
-      color: var(--muted);
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .preview-pool-tag {
-      font-size: 0.65rem;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: rgba(155, 92, 246, 0.15);
-      color: var(--neon);
-      border: 1px solid rgba(155, 92, 246, 0.3);
-    }
+    /* PREVIEW */
+    .preview-card { border-radius: 12px; overflow: hidden; border: 1px solid var(--border); margin-bottom: 28px; }
+    .preview-visual { height: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px; background: var(--surface2); transition: background 0.3s; position: relative; overflow: hidden; }
+    .preview-visual::before { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.45); }
+    .preview-name { font-size: 1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; text-align: center; z-index: 1; line-height: 1.2; transition: font-family 0.2s; }
+    .preview-cat { font-size: 0.65rem; font-weight: 600; letter-spacing: 2px; z-index: 1; margin-top: 6px; opacity: 0.85; }
+    .preview-meta { background: var(--surface); padding: 10px 14px; font-size: 0.8rem; color: var(--muted); display: flex; justify-content: space-between; }
+    .preview-pool-tag { font-size: 0.65rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: rgba(155,92,246,0.15); color: var(--neon); border: 1px solid rgba(155,92,246,0.3); }
 
     /* FORM */
-    .form-group {
-      margin-bottom: 22px;
-    }
-
-    label {
-      display: block;
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: var(--text);
-    }
-
+    .form-group { margin-bottom: 22px; }
+    label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 8px; color: var(--text); }
     label .req { color: var(--neon); }
     label .opt { color: var(--muted); font-weight: 400; font-size: 0.8rem; }
 
-    input[type="text"],
-    input[type="datetime-local"],
-    input[type="url"],
-    textarea {
-      width: 100%;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px 14px;
-      color: var(--text);
-      font-size: 0.9rem;
-      font-family: inherit;
-      outline: none;
-      transition: border-color 0.2s;
+    input[type="text"], input[type="date"], input[type="url"], select, textarea {
+      width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+      padding: 12px 14px; color: var(--text); font-size: 0.9rem; font-family: inherit; outline: none; transition: border-color 0.2s;
+      -webkit-appearance: none; appearance: none;
     }
+    input:focus, select:focus, textarea:focus { border-color: var(--neon); }
+    input::placeholder, textarea::placeholder { color: var(--muted); }
+    textarea { resize: vertical; min-height: 90px; }
+    select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b6b8a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; cursor: pointer; }
 
-    input:focus, textarea:focus {
-      border-color: var(--neon);
-    }
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 500px) { .row-2 { grid-template-columns: 1fr; } }
 
-    input::placeholder, textarea::placeholder {
-      color: var(--muted);
-    }
+    /* CHIPS */
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip { padding: 6px 14px; border-radius: 999px; font-size: 0.82rem; font-weight: 600; cursor: pointer; border: 1.5px solid var(--border); background: transparent; color: var(--muted); transition: all 0.15s; }
+    .chip.selected { color: #fff; }
 
-    textarea {
-      resize: vertical;
-      min-height: 90px;
-    }
+    /* PRICE */
+    .price-toggle { display: flex; gap: 8px; flex-wrap: wrap; }
+    .price-btn { padding: 8px 20px; border-radius: 8px; font-size: 0.88rem; font-weight: 600; cursor: pointer; border: 1.5px solid var(--border); background: transparent; color: var(--muted); transition: all 0.15s; font-family: inherit; }
+    .price-btn.selected { border-color: var(--cyan); color: var(--cyan); background: rgba(6,182,212,0.1); }
+    .price-detail { margin-top: 10px; }
 
-    .row-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
+    /* COLOR PICKER */
+    .color-swatches { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .swatch { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: all 0.15s; flex-shrink: 0; }
+    .swatch.selected { border-color: #fff; transform: scale(1.15); }
+    .swatch-custom { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border); background: transparent; cursor: pointer; overflow: hidden; padding: 0; position: relative; }
+    .swatch-custom input[type="color"] { position: absolute; inset: -4px; width: calc(100% + 8px); height: calc(100% + 8px); cursor: pointer; opacity: 0; }
+    .swatch-custom-icon { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; pointer-events: none; }
+    .swatch-cat { font-size: 0.78rem; color: var(--muted); padding: 6px 12px; border-radius: 999px; border: 1.5px solid var(--border); cursor: pointer; transition: all 0.15s; }
+    .swatch-cat.selected { border-color: var(--neon); color: var(--neon); background: rgba(155,92,246,0.1); }
 
-    @media (max-width: 500px) {
-      .row-2 { grid-template-columns: 1fr; }
-    }
+    /* FONT PICKER */
+    .font-options { display: flex; flex-direction: column; gap: 8px; }
+    .font-option { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: var(--surface); border: 1.5px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.15s; }
+    .font-option.selected { border-color: var(--neon); background: rgba(155,92,246,0.08); }
+    .font-preview { font-size: 1.1rem; flex: 1; letter-spacing: 0.5px; }
+    .font-label { font-size: 0.72rem; color: var(--muted); white-space: nowrap; }
 
-    /* CHIP SELECTORS */
-    .chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .chip {
-      padding: 6px 14px;
-      border-radius: 999px;
-      font-size: 0.82rem;
-      font-weight: 600;
-      cursor: pointer;
-      border: 1.5px solid var(--border);
-      background: transparent;
-      color: var(--muted);
-      transition: all 0.15s;
-    }
-
-    .chip.selected {
-      color: #fff;
-    }
-
-    /* PRICE TOGGLE */
-    .price-toggle {
-      display: flex;
-      gap: 8px;
-    }
-
-    .price-btn {
-      padding: 8px 20px;
-      border-radius: 8px;
-      font-size: 0.88rem;
-      font-weight: 600;
-      cursor: pointer;
-      border: 1.5px solid var(--border);
-      background: transparent;
-      color: var(--muted);
-      transition: all 0.15s;
-    }
-
-    .price-btn.selected {
-      border-color: var(--cyan);
-      color: var(--cyan);
-      background: rgba(6, 182, 212, 0.1);
-    }
-
-    .price-detail {
-      margin-top: 10px;
-    }
+    /* SUBCAT */
+    .subcat-section { margin-top: 12px; display: none; }
+    .subcat-section.visible { display: block; }
+    .subcat-label { font-size: 0.78rem; color: var(--muted); margin-bottom: 8px; }
 
     /* DIVIDER */
-    .divider {
-      height: 1px;
-      background: var(--border);
-      margin: 28px 0;
-    }
+    .divider { height: 1px; background: var(--border); margin: 28px 0; }
 
     /* SUBMIT */
-    .submit-btn {
-      width: 100%;
-      padding: 16px;
-      background: var(--text);
-      color: var(--bg);
-      border: none;
-      border-radius: 10px;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: opacity 0.2s;
-    }
-
+    .submit-btn { width: 100%; padding: 16px; background: var(--text); color: var(--bg); border: none; border-radius: 10px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: opacity 0.2s; font-family: inherit; }
     .submit-btn:hover { opacity: 0.9; }
-
-    .submit-note {
-      text-align: center;
-      font-size: 0.75rem;
-      color: var(--muted);
-      margin-top: 10px;
-    }
-
-    .submit-note a {
-      color: #ef4444;
-      text-decoration: none;
-    }
+    .submit-note { text-align: center; font-size: 0.75rem; color: var(--muted); margin-top: 10px; }
 
     /* SUCCESS */
-    .success-screen {
-      display: none;
-      text-align: center;
-      padding: 60px 20px;
-    }
-
+    .success-screen { display: none; text-align: center; padding: 60px 20px; }
     .success-screen.visible { display: block; }
+    .success-icon { font-size: 3rem; margin-bottom: 16px; }
+    .success-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 8px; }
+    .success-sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 28px; }
+    .back-btn { display: inline-block; padding: 12px 28px; background: var(--neon); color: #fff; border-radius: 8px; text-decoration: none; font-weight: 700; box-shadow: 0 0 24px var(--neon-glow); }
 
-    .success-icon {
-      font-size: 3rem;
-      margin-bottom: 16px;
-    }
-
-    .success-title {
-      font-size: 1.4rem;
-      font-weight: 800;
-      margin-bottom: 8px;
-    }
-
-    .success-sub {
-      color: var(--muted);
-      font-size: 0.9rem;
-      margin-bottom: 28px;
-    }
-
-    .back-btn {
-      display: inline-block;
-      padding: 12px 28px;
-      background: var(--neon);
-      color: #fff;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 700;
-      box-shadow: 0 0 24px var(--neon-glow);
-    }
-
-    /* SUBCATS */
-    .subcat-section {
-      margin-top: 12px;
-      display: none;
-    }
-
-    .subcat-section.visible { display: block; }
-
-    .subcat-label {
-      font-size: 0.78rem;
-      color: var(--muted);
-      margin-bottom: 8px;
-    }
+    /* ERROR */
+    .error-box { display: none; background: rgba(239,68,68,0.1); border: 1px solid #ef4444; border-radius: 8px; padding: 12px; margin-bottom: 12px; font-size: 0.82rem; color: #ef4444; word-break: break-all; }
   </style>
 </head>
 <body>
@@ -357,64 +128,97 @@
       </div>
     </div>
 
-    <!-- FORM -->
+    <!-- NOM -->
     <div class="form-group">
       <label>Nom de l'event <span class="req">*</span></label>
       <input type="text" id="f-name" placeholder="Ex: Nuit Fluorescente vol.3" />
     </div>
 
+    <!-- CATÉGORIE -->
     <div class="form-group">
       <label>Catégorie <span class="req">*</span></label>
       <div class="chips" id="cats"></div>
-
       <div class="subcat-section" id="subcat-section">
-        <div class="subcat-label">Sous-genre (optionnel)</div>
+        <div class="subcat-label">Sous-genre <span style="opacity:0.5">(optionnel)</span></div>
         <div class="chips" id="subcats"></div>
       </div>
     </div>
 
+    <!-- DATE + HEURE -->
     <div class="row-2">
       <div class="form-group">
         <label>Date <span class="req">*</span></label>
-        <input type="datetime-local" id="f-date" />
+        <input type="date" id="f-date" />
       </div>
       <div class="form-group">
-        <label>Lieu <span class="req">*</span></label>
-        <input type="text" id="f-venue" placeholder="Bar, salle, adresse..." />
+        <label>Heure <span class="req">*</span></label>
+        <select id="f-time"></select>
       </div>
     </div>
 
+    <!-- LIEU -->
+    <div class="form-group">
+      <label>Salle / Lieu <span class="req">*</span></label>
+      <input type="text" id="f-venue" placeholder="Bar, salle, adresse..." list="venues-list" />
+      <datalist id="venues-list"></datalist>
+    </div>
+
+    <!-- PRIX -->
     <div class="form-group">
       <label>Prix</label>
       <div class="price-toggle">
         <button class="price-btn selected" data-price="gratuit">Gratuit</button>
+        <button class="price-btn" data-price="pwyc">PWYC</button>
         <button class="price-btn" data-price="payant">Payant</button>
       </div>
       <div class="price-detail" id="price-detail" style="display:none;">
-        <input type="text" id="f-price" placeholder="Ex: 10$, PAP, sliding scale, membres..." />
+        <input type="text" id="f-price" placeholder="Ex: 10$, PAP, membres seulement..." />
       </div>
     </div>
 
+    <!-- DESCRIPTION -->
     <div class="form-group">
       <label>Description <span class="req">*</span></label>
-      <textarea id="f-desc" placeholder="Ambiance, lineup, infos importantes... Sois honnête, les gens apprécient."></textarea>
+      <textarea id="f-desc" placeholder="Ambiance, lineup, infos importantes..."></textarea>
     </div>
 
+    <!-- SOURCE -->
     <div class="form-group">
-      <label>Lien source <span class="opt">(optionnel)</span></label>
-      <input type="url" id="f-source" placeholder="Facebook, Instagram, Eventbrite..." />
+      <label>Lien source <span class="opt">(optionnel — https seulement)</span></label>
+      <input type="url" id="f-source" placeholder="https://facebook.com/events/..." />
+    </div>
+
+    <!-- VIGNETTE COLOR -->
+    <div class="form-group">
+      <label>Couleur de la vignette <span class="opt">(optionnel)</span></label>
+      <div class="color-swatches" id="color-swatches">
+        <button class="swatch-cat selected" id="swatch-cat-btn">Couleur du genre</button>
+        <div class="swatch" data-color="#9b5cf6" style="background:#9b5cf6;" title="Violet"></div>
+        <div class="swatch" data-color="#ec4899" style="background:#ec4899;" title="Rose"></div>
+        <div class="swatch" data-color="#06b6d4" style="background:#06b6d4;" title="Cyan"></div>
+        <div class="swatch" data-color="#10b981" style="background:#10b981;" title="Vert"></div>
+        <div class="swatch" data-color="#f59e0b" style="background:#f59e0b;" title="Ambre"></div>
+        <div class="swatch" data-color="#ef4444" style="background:#ef4444;" title="Rouge"></div>
+        <div class="swatch" data-color="#1e1e2e" style="background:#1e1e2e;border:1px solid #444;" title="Noir profond"></div>
+        <div class="swatch" data-color="#ffffff" style="background:#fff;" title="Blanc"></div>
+        <div class="swatch-custom" title="Couleur personnalisée">
+          <input type="color" id="f-color-custom" value="#9b5cf6" />
+          <div class="swatch-custom-icon">🎨</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FONT -->
+    <div class="form-group">
+      <label>Police du titre <span class="opt">(optionnel)</span></label>
+      <div class="font-options" id="font-options"></div>
     </div>
 
     <div class="divider"></div>
-
-    <div id="error-box" style="display:none;background:rgba(239,68,68,0.1);border:1px solid #ef4444;border-radius:8px;padding:12px;margin-bottom:12px;font-size:0.82rem;color:#ef4444;word-break:break-all;">
-      <strong>Erreur :</strong> <span id="error-msg"></span>
-    </div>
+    <div class="error-box" id="error-box"><strong>Erreur :</strong> <span id="error-msg"></span></div>
     <button class="submit-btn" id="submit-btn">Garoche dans le Pool</button>
-    <p class="submit-note">
-      Ton event sera visible immédiatement.<br />
-      Contenu <a href="#">pornographique ou snuff</a> = rejeté. Tout le reste, on s'en fout.
-    </p>
+    <!-- disclaimer placeholder -->
+    <p class="submit-note" id="submit-note">Ton event sera visible immédiatement.</p>
   </div>
 
   <div class="success-screen" id="success-screen">
@@ -429,24 +233,89 @@
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"></script>
 <script>
   const CATEGORIES = {
-    'Techno':        { color: '#9b5cf6', subs: ['Industrial', 'Acid', 'Hard Techno', 'Minimal', 'Ambient Techno'] },
-    'Jazz':          { color: '#f59e0b', subs: ['Bebop', 'Fusion', 'Nu Jazz', 'Free Jazz', 'Latin Jazz'] },
-    'Indie / Rock':  { color: '#10b981', subs: ['Post-Rock', 'Garage', 'Shoegaze', 'Psychédélique', 'Math Rock'] },
-    'Rave':          { color: '#ec4899', subs: ['Old School', 'Happy Hardcore', 'Trance', 'Gabber'] },
-    'Comedy':        { color: '#f97316', subs: ['Stand-Up', 'Improv', 'Sketch', 'Open Mic Comedy'] },
-    'Hip-Hop':       { color: '#ef4444', subs: ['Rap', 'Trap', 'Boom Bap', 'R&B', 'Spoken Word'] },
-    'Électro':       { color: '#06b6d4', subs: ['House', 'Deep House', 'Tech House', 'Synthwave', 'EBM'] },
-    'Punk':          { color: '#84cc16', subs: ['Hardcore', 'Oi!', 'Post-Punk', 'Crust', 'Anarcho-Punk', 'Pop-Punk'] },
-    'Metal':         { color: '#64748b', subs: ['Death Metal', 'Black Metal', 'Doom', 'Sludge', 'Thrash', 'Prog Metal', 'Stoner'] },
-    'Drum n Bass':   { color: '#a78bfa', subs: ['Liquid', 'Neurofunk', 'Jump Up', 'Ragga DnB', 'Dubstep', 'Jungle'] },
-    'Open Mic':      { color: '#fbbf24', subs: ['Poésie', 'Musique', 'Comédie', 'Spoken Word', 'Mixte'] },
-    'Open Jam':      { color: '#34d399', subs: ['Blues', 'Jazz Jam', 'Rock Jam', 'Funk', 'Tout genre'] },
-    'Autre':         { color: '#94a3b8', subs: ['Expérimental', 'Classique', 'Folk', 'Soul', 'Reggae', 'World Music'] },
+    'Techno':             { color: '#9b5cf6', subs: ['Industrial', 'Acid', 'Hard Techno', 'Minimal', 'Ambient Techno', 'Dub Techno'] },
+    'Électro':            { color: '#06b6d4', subs: ['House', 'Deep House', 'Tech House', 'Synthwave', 'EBM', 'Trance', 'Ambient'] },
+    'Drum n Bass':        { color: '#a78bfa', subs: ['Liquid', 'Neurofunk', 'Jump Up', 'Ragga DnB', 'Jungle', 'Dubstep', 'Halftime'] },
+    'Rave':               { color: '#ec4899', subs: ['Old School', 'Happy Hardcore', 'Gabber', 'UK Hardcore'] },
+    'Hip-Hop':            { color: '#ef4444', subs: ['Rap', 'Trap', 'Boom Bap', 'R&B', 'Neo Soul', 'Spoken Word'] },
+    'Punk':               { color: '#84cc16', subs: ['Hardcore', 'Oi!', 'Post-Punk', 'Crust', 'Anarcho-Punk', 'Pop-Punk', 'Noise Rock'] },
+    'Metal':              { color: '#64748b', subs: ['Death Metal', 'Black Metal', 'Doom', 'Sludge', 'Thrash', 'Prog Metal', 'Stoner', 'Grindcore'] },
+    'Indie / Rock':       { color: '#10b981', subs: ['Post-Rock', 'Garage', 'Shoegaze', 'Psychédélique', 'Math Rock', 'Grunge', 'Alternative'] },
+    'Jazz':               { color: '#f59e0b', subs: ['Bebop', 'Fusion', 'Nu Jazz', 'Free Jazz', 'Latin Jazz', 'Jazz Manouche'] },
+    'Blues':              { color: '#b45309', subs: ['Chicago Blues', 'Delta Blues', 'Electric Blues', 'Blues Rock'] },
+    'Folk / Chanson':     { color: '#65a30d', subs: ['Singer-Songwriter', 'Chanson Française', 'Québécois', 'Bluegrass', 'Celtic'] },
+    'Soul / Funk':        { color: '#d97706', subs: ['Soul', 'Funk', 'R&B classique', 'Gospel', 'Afrobeat'] },
+    'Reggae / Ska':       { color: '#16a34a', subs: ['Roots Reggae', 'Dub', 'Ska', 'Rocksteady', 'Dancehall'] },
+    'Classique':          { color: '#94a3b8', subs: ['Orchestral', 'Chambre', 'Opéra', 'Contemporain', 'Baroque'] },
+    'Comedy':             { color: '#f97316', subs: ['Stand-Up', 'Improv', 'Sketch', 'Roast', 'Open Mic Comedy'] },
+    'Théâtre / Perf.':   { color: '#c026d3', subs: ['Théâtre', 'Performance Art', 'Danse', 'Burlesque', 'Cabaret', 'Cirque'] },
+    'Spoken Word':        { color: '#7c3aed', subs: ['Poésie', 'Slam', 'Lecture', 'Conte'] },
+    'Open Mic':           { color: '#fbbf24', subs: ['Musique', 'Poésie', 'Comédie', 'Mixte'] },
+    'Open Jam':           { color: '#34d399', subs: ['Blues Jam', 'Jazz Jam', 'Rock Jam', 'Funk Jam', 'Tout genre'] },
+    'Arts visuels':       { color: '#e879f9', subs: ['Vernissage', 'Exposition', 'Installation', 'Atelier'] },
+    'Expérimental':       { color: '#475569', subs: ['Noise', 'Drone', 'Avant-garde', 'Electroacoustique', 'Musique Concrète'] },
+    'Autre':              { color: '#94a3b8', subs: ['World Music', 'Pop', 'K-Pop', 'Latino', 'Salsa', 'Tango'] },
   };
+
+  const FONTS = [
+    { id: 'default',        label: 'Clean',          family: 'system-ui, sans-serif',    preview: 'NIGHT POOL' },
+    { id: 'bebas',          label: 'Sharp',          family: "'Bebas Neue', sans-serif", preview: 'NIGHT POOL' },
+    { id: 'orbitron',       label: 'Sci-Fi',         family: "'Orbitron', sans-serif",   preview: 'NIGHT POOL' },
+    { id: 'bungee',         label: 'Eccentric',      family: "'Bungee', sans-serif",     preview: 'NIGHT POOL' },
+    { id: 'metal',          label: 'Metal',          family: "'Metal Mania', cursive",   preview: 'NIGHT POOL' },
+    { id: 'glitch',         label: 'Glitch',         family: "'Rubik Glitch', sans-serif", preview: 'NIGHT POOL' },
+    { id: 'dirty',          label: 'Rusty',          family: "'Rubik Dirt', sans-serif", preview: 'NIGHT POOL' },
+    { id: 'arcade',         label: '8-bit',          family: "'Press Start 2P', monospace", preview: 'POOL' },
+    { id: 'vt323',          label: 'Terminal',       family: "'VT323', monospace",        preview: 'NIGHT POOL' },
+    { id: 'creepster',      label: 'Horror',         family: "'Creepster', cursive",      preview: 'NIGHT POOL' },
+  ];
+
+  const SUPABASE_URL = 'https://wgewtmrtrygtroizhaxr.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnZXd0bXJ0cnlndHJvaXpoYXhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNDM5OTAsImV4cCI6MjA5MzgxOTk5MH0.z9Qe-9NezVenudqhE8SU5kPae4cX6_i3cCDH6DpM864';
+  const { createClient } = supabase;
+  const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
   let selectedCat = '';
   let selectedSub = '';
   let selectedPrice = 'gratuit';
+  let selectedColor = null; // null = use category color
+  let selectedFont = 'default';
+  let prefillGroupId = null;
+
+  // Check URL params (for "poster une mise à jour" flow)
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('group_id')) {
+    prefillGroupId = urlParams.get('group_id');
+    if (urlParams.get('name')) document.getElementById('f-name').value = urlParams.get('name');
+    document.getElementById('submit-note').textContent = '📝 Mise à jour — sera groupée avec l\'event existant.';
+  }
+
+  // Build time select (30 min increments, default 20:00)
+  const timeEl = document.getElementById('f-time');
+  for (let h = 0; h < 24; h++) {
+    for (let m = 0; m < 60; m += 30) {
+      const val = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+      const opt = document.createElement('option');
+      opt.value = val;
+      opt.textContent = val;
+      if (val === '20:00') opt.selected = true;
+      timeEl.appendChild(opt);
+    }
+  }
+
+  // Load existing venues for datalist
+  async function loadVenues() {
+    const { data } = await db.from('events').select('venue');
+    if (!data) return;
+    const unique = [...new Set(data.map(e => e.venue).filter(Boolean))];
+    const dl = document.getElementById('venues-list');
+    unique.forEach(v => {
+      const opt = document.createElement('option');
+      opt.value = v;
+      dl.appendChild(opt);
+    });
+  }
+  loadVenues();
 
   // Build category chips
   const catsEl = document.getElementById('cats');
@@ -463,27 +332,23 @@
     selectedCat = cat;
     selectedSub = '';
     const color = CATEGORIES[cat].color;
-
     document.querySelectorAll('#cats .chip').forEach(c => {
       c.classList.remove('selected');
       c.style.borderColor = '';
       c.style.background = '';
       c.style.color = '';
     });
-
     const active = document.querySelector(`#cats .chip[data-cat="${cat}"]`);
     active.classList.add('selected');
     active.style.borderColor = color;
     active.style.background = color + '22';
     active.style.color = color;
 
-    // subcategories
     const subs = CATEGORIES[cat].subs;
     const subSection = document.getElementById('subcat-section');
     const subsEl = document.getElementById('subcats');
     subsEl.innerHTML = '';
-
-    if (subs && subs.length) {
+    if (subs?.length) {
       subs.forEach(sub => {
         const btn = document.createElement('button');
         btn.className = 'chip';
@@ -496,7 +361,6 @@
     } else {
       subSection.classList.remove('visible');
     }
-
     updatePreview();
   }
 
@@ -526,40 +390,83 @@
     });
   });
 
+  // Color swatches
+  document.querySelectorAll('.swatch').forEach(sw => {
+    sw.addEventListener('click', () => {
+      document.querySelectorAll('.swatch').forEach(s => s.classList.remove('selected'));
+      document.getElementById('swatch-cat-btn').classList.remove('selected');
+      sw.classList.add('selected');
+      selectedColor = sw.dataset.color;
+      updatePreview();
+    });
+  });
+
+  document.getElementById('swatch-cat-btn').addEventListener('click', () => {
+    document.querySelectorAll('.swatch').forEach(s => s.classList.remove('selected'));
+    document.getElementById('swatch-cat-btn').classList.add('selected');
+    selectedColor = null;
+    updatePreview();
+  });
+
+  document.getElementById('f-color-custom').addEventListener('input', function() {
+    document.querySelectorAll('.swatch').forEach(s => s.classList.remove('selected'));
+    document.getElementById('swatch-cat-btn').classList.remove('selected');
+    selectedColor = this.value;
+    updatePreview();
+  });
+
+  // Font options
+  const fontEl = document.getElementById('font-options');
+  FONTS.forEach(f => {
+    const div = document.createElement('div');
+    div.className = 'font-option' + (f.id === 'default' ? ' selected' : '');
+    div.dataset.font = f.id;
+    div.innerHTML = `<span class="font-preview" style="font-family:${f.family}">${f.preview}</span><span class="font-label">${f.label}</span>`;
+    div.addEventListener('click', () => {
+      document.querySelectorAll('.font-option').forEach(o => o.classList.remove('selected'));
+      div.classList.add('selected');
+      selectedFont = f.id;
+      updatePreview();
+    });
+    fontEl.appendChild(div);
+  });
+
   // Live preview
-  document.getElementById('f-name').addEventListener('input', updatePreview);
-  document.getElementById('f-date').addEventListener('change', updatePreview);
-  document.getElementById('f-venue').addEventListener('input', updatePreview);
+  ['f-name','f-venue'].forEach(id => document.getElementById(id).addEventListener('input', updatePreview));
+  ['f-date','f-time'].forEach(id => document.getElementById(id).addEventListener('change', updatePreview));
+
+  function getPreviewColor() {
+    if (selectedColor) return selectedColor;
+    if (selectedCat) return CATEGORIES[selectedCat].color;
+    return '#2a2a3a';
+  }
+
+  function getFontFamily() {
+    return FONTS.find(f => f.id === selectedFont)?.family || 'system-ui, sans-serif';
+  }
 
   function updatePreview() {
     const name = document.getElementById('f-name').value.trim() || 'Nom de ton event...';
     const venue = document.getElementById('f-venue').value.trim();
-    const dateRaw = document.getElementById('f-date').value;
-    const color = selectedCat ? CATEGORIES[selectedCat].color : '#2a2a3a';
-    const catLabel = selectedCat
-      ? (selectedSub ? `${selectedCat} · ${selectedSub}` : selectedCat)
-      : 'Catégorie';
+    const date = document.getElementById('f-date').value;
+    const time = document.getElementById('f-time').value;
+    const catLabel = selectedCat ? (selectedSub ? `${selectedCat} · ${selectedSub}` : selectedCat) : 'Catégorie';
 
     document.getElementById('preview-name').textContent = name;
+    document.getElementById('preview-name').style.fontFamily = getFontFamily();
     document.getElementById('preview-cat').textContent = catLabel.toUpperCase();
-    document.getElementById('preview-visual').style.background = color;
+    document.getElementById('preview-visual').style.background = getPreviewColor();
 
     let metaParts = [];
-    if (dateRaw) {
-      const d = new Date(dateRaw);
-      metaParts.push(d.toLocaleDateString('fr-CA', { weekday: 'short', month: 'short', day: 'numeric' }) + ' ' + d.toLocaleTimeString('fr-CA', { hour: '2-digit', minute: '2-digit' }));
+    if (date) {
+      const d = new Date(date + 'T12:00:00');
+      metaParts.push(d.toLocaleDateString('fr-CA', { weekday: 'short', month: 'short', day: 'numeric' }) + (time ? ' · ' + time : ''));
     }
     if (venue) metaParts.push(venue);
     document.getElementById('preview-meta').textContent = metaParts.join(' · ') || 'Date · Lieu';
   }
 
-  // Supabase
-  const { createClient } = supabase;
-  const db = createClient(
-    'https://wgewtmrtrygtroizhaxr.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnZXd0bXJ0cnlndHJvaXpoYXhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNDM5OTAsImV4cCI6MjA5MzgxOTk5MH0.z9Qe-9NezVenudqhE8SU5kPae4cX6_i3cCDH6DpM864'
-  );
-
+  // UUID fallback
   function randomUUID() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
       const r = Math.random() * 16 | 0;
@@ -567,40 +474,59 @@
     });
   }
 
-  // Détection de doublon → retourne un group_id existant ou un nouveau UUID
+  // URL validation
+  function isValidSource(url) {
+    if (!url) return true;
+    try {
+      const u = new URL(url);
+      if (u.protocol !== 'https:') return false;
+      const host = u.hostname.toLowerCase();
+      if (host.endsWith('.onion')) return false;
+      if (host.endsWith('.i2p')) return false;
+      return true;
+    } catch { return false; }
+  }
+
+  // Duplicate detection
   async function findGroupId(name, venue, dateStr) {
+    if (prefillGroupId) return prefillGroupId;
     if (typeof Fuse === 'undefined') return randomUUID();
 
     const { data } = await db.from('events').select('id, name, venue, date, group_id');
     if (!data || data.length === 0) return randomUUID();
 
-    const fuse = new Fuse(data, {
-      keys: ['name'],
-      threshold: 0.6,
-      includeScore: true,
-    });
-
+    const fuse = new Fuse(data, { keys: ['name'], threshold: 0.6, includeScore: true });
     const results = fuse.search(name);
     const eventDate = new Date(dateStr + 'T12:00:00');
 
     for (const result of results) {
-      const candidate = result.item;
-      const dayDiff = Math.abs((eventDate - new Date(candidate.date + 'T12:00:00')) / 86400000);
-      if (dayDiff <= 1) return candidate.group_id || candidate.id;
+      const c = result.item;
+      const dayDiff = Math.abs((eventDate - new Date(c.date + 'T12:00:00')) / 86400000);
+      if (dayDiff <= 1) return c.group_id || c.id;
     }
-
     return randomUUID();
   }
 
   // Submit
   document.getElementById('submit-btn').addEventListener('click', async () => {
-    const name = document.getElementById('f-name').value.trim();
-    const date = document.getElementById('f-date').value;
-    const venue = document.getElementById('f-venue').value.trim();
-    const desc = document.getElementById('f-desc').value.trim();
+    const name    = document.getElementById('f-name').value.trim();
+    const dateVal = document.getElementById('f-date').value;
+    const time    = document.getElementById('f-time').value;
+    const venue   = document.getElementById('f-venue').value.trim();
+    const desc    = document.getElementById('f-desc').value.trim();
+    const source  = document.getElementById('f-source').value.trim();
 
-    if (!name || !selectedCat || !date || !venue || !desc) {
-      alert('Remplis tous les champs obligatoires (*)');
+    document.getElementById('error-box').style.display = 'none';
+
+    if (!name || !selectedCat || !dateVal || !venue || !desc) {
+      document.getElementById('error-msg').textContent = 'Remplis tous les champs obligatoires (*).';
+      document.getElementById('error-box').style.display = 'block';
+      return;
+    }
+
+    if (!isValidSource(source)) {
+      document.getElementById('error-msg').textContent = 'Le lien source doit être en https:// (pas de http, pas de .onion).';
+      document.getElementById('error-box').style.display = 'block';
       return;
     }
 
@@ -609,46 +535,64 @@
     btn.disabled = true;
 
     try {
-      const d = new Date(date);
-      const priceVal = selectedPrice === 'gratuit'
-        ? 'gratuit'
+      const priceVal = selectedPrice === 'gratuit' ? 'gratuit'
+        : selectedPrice === 'pwyc' ? 'PWYC'
         : (document.getElementById('f-price').value.trim() || 'payant');
 
-      const dateOnly = d.toISOString().split('T')[0];
-
       let groupId;
-      try {
-        groupId = await findGroupId(name, venue, dateOnly);
-      } catch (e) {
-        groupId = randomUUID();
-      }
+      try { groupId = await findGroupId(name, venue, dateVal); }
+      catch { groupId = randomUUID(); }
 
-      const { error } = await db.from('events').insert({
-        name,
-        category: selectedCat,
-        subcat: selectedSub || null,
-        date: dateOnly,
-        time: d.toLocaleTimeString('fr-CA', { hour: '2-digit', minute: '2-digit' }),
-        venue,
-        price: priceVal,
-        description: desc,
-        source: document.getElementById('f-source').value.trim() || null,
-        tab: 'pool',
-        group_id: groupId,
-      });
+      const payload = {
+        name, category: selectedCat, subcat: selectedSub || null,
+        date: dateVal, time,
+        venue, price: priceVal, description: desc,
+        source: source || null,
+        tab: 'pool', group_id: groupId,
+        font: selectedFont !== 'default' ? selectedFont : null,
+        visual_color: selectedColor || null,
+      };
 
+      const { error } = await db.from('events').insert(payload);
       if (error) throw error;
 
       document.getElementById('form-section').style.display = 'none';
       document.getElementById('success-screen').classList.add('visible');
     } catch (e) {
-      const msg = e?.message || e?.details || JSON.stringify(e) || 'Erreur inconnue';
-      document.getElementById('error-msg').textContent = msg;
+      // If font/visual_color columns don't exist yet, retry without them
+      if (e?.message?.includes('font') || e?.message?.includes('visual_color')) {
+        try {
+          const priceVal = selectedPrice === 'gratuit' ? 'gratuit'
+            : selectedPrice === 'pwyc' ? 'PWYC'
+            : (document.getElementById('f-price').value.trim() || 'payant');
+          let groupId;
+          try { groupId = await findGroupId(name, document.getElementById('f-venue').value.trim(), dateVal); }
+          catch { groupId = randomUUID(); }
+          const { error: e2 } = await db.from('events').insert({
+            name, category: selectedCat, subcat: selectedSub || null,
+            date: dateVal, time: document.getElementById('f-time').value,
+            venue: document.getElementById('f-venue').value.trim(),
+            price: priceVal, description: document.getElementById('f-desc').value.trim(),
+            source: document.getElementById('f-source').value.trim() || null,
+            tab: 'pool', group_id: groupId,
+          });
+          if (e2) throw e2;
+          document.getElementById('form-section').style.display = 'none';
+          document.getElementById('success-screen').classList.add('visible');
+          return;
+        } catch (e3) {
+          document.getElementById('error-msg').textContent = e3?.message || JSON.stringify(e3);
+        }
+      } else {
+        document.getElementById('error-msg').textContent = e?.message || e?.details || JSON.stringify(e) || 'Erreur inconnue';
+      }
       document.getElementById('error-box').style.display = 'block';
       btn.textContent = 'Garoche dans le Pool';
       btn.disabled = false;
     }
   });
+
+  updatePreview();
 </script>
 </body>
 </html>
