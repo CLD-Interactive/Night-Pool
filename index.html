@@ -541,14 +541,50 @@
     .version-item {
       background: var(--surface2);
       border-radius: 10px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .version-item-visual {
+      width: 100%;
+      min-height: 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
       padding: 12px;
-      margin-top: 8px;
+      position: relative;
+    }
+
+    .version-item-visual-name {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 2px;
+      word-break: break-word;
+    }
+
+    .version-item-visual-sub {
+      font-size: 0.65rem;
+      color: rgba(255,255,255,0.7);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .version-item-body {
+      padding: 10px 12px 12px;
     }
 
     .version-item-date {
       font-size: 0.7rem;
       color: var(--muted);
       font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .version-item-meta {
+      font-size: 0.75rem;
+      color: var(--muted);
       margin-bottom: 6px;
     }
 
@@ -906,6 +942,18 @@
     return FONT_FAMILIES[fontId] || FONT_FAMILIES['default'];
   }
 
+  function buildTitleStyle(ev) {
+    const color = ev.font_color || '#ffffff';
+    let style = `color:${color};font-family:${getFontFamily(ev.font)};`;
+    if (ev.font_edge) {
+      style += `-webkit-text-stroke:1.5px ${ev.font_edge};paint-order:stroke fill;`;
+    }
+    if (ev.font_shadow) {
+      style += `text-shadow:2px 3px 8px ${ev.font_shadow};`;
+    }
+    return style;
+  }
+
   function formatDate(dateStr, timeStr) {
     if (!dateStr) return '';
     const d = new Date(dateStr + 'T00:00:00');
@@ -984,7 +1032,6 @@
   function renderCard(group) {
     const ev = group[0];
     const rawColor = ev.visual_color || getColor(ev.category);
-    const fontFamily = getFontFamily(ev.font);
     const catLabel = ev.subcat ? `${ev.category} · ${ev.subcat}` : ev.category;
     const pcat = priceCategory(ev.price);
     const isCash = ev.tab === 'cash';
@@ -1003,7 +1050,7 @@
     return `
       <div class="event-card" data-gid="${gid}">
         <div class="event-visual" style="background:${rawColor};">
-          <div class="event-visual-name" style="font-family:${fontFamily}">${ev.name}</div>
+          <div class="event-visual-name" style="${buildTitleStyle(ev)}">${ev.name}</div>
           <div class="event-visual-cat">${catLabel.toUpperCase()}</div>
         </div>
         <div class="event-body">
@@ -1240,15 +1287,15 @@
   function openModal(group) {
     const ev = group[0];
     const rawColor = ev.visual_color || getColor(ev.category);
-    const fontFamily = getFontFamily(ev.font);
     const catLabel = ev.subcat ? `${ev.category} · ${ev.subcat}` : ev.category;
     const pcat = priceCategory(ev.price);
     const isCash = ev.tab === 'cash';
     const gid = ev.group_id || ev.id;
 
     document.getElementById('modal-visual').style.background = rawColor;
-    document.getElementById('modal-visual-name').style.fontFamily = fontFamily;
-    document.getElementById('modal-visual-name').textContent = ev.name;
+    const modalNameEl = document.getElementById('modal-visual-name');
+    modalNameEl.setAttribute('style', buildTitleStyle(ev));
+    modalNameEl.textContent = ev.name;
     document.getElementById('modal-visual-cat').textContent = catLabel.toUpperCase();
     document.getElementById('modal-date').textContent = formatDate(ev.date, ev.time);
     document.getElementById('modal-venue').textContent = ev.venue;
@@ -1305,11 +1352,20 @@
             const d = new Date(v.created_at);
             const lbl = d.toLocaleDateString('fr-CA', { month: 'short', day: 'numeric' })
                       + ' ' + d.toLocaleTimeString('fr-CA', { hour: '2-digit', minute: '2-digit' });
+            const vColor = v.visual_color || getColor(v.category);
+            const vCatLabel = v.subcat ? `${v.category} · ${v.subcat}` : v.category;
             return `
               <div class="version-item">
-                <div class="version-item-date">Soumis le ${lbl}</div>
-                <div class="version-item-desc">${v.description || ''}</div>
-                <div class="version-flag-row">${makeFlagHTML(v, true)}</div>
+                <div class="version-item-visual" style="background:${vColor};">
+                  <div class="version-item-visual-name" style="${buildTitleStyle(v)}">${v.name || ''}</div>
+                  <div class="version-item-visual-sub">${vCatLabel.toUpperCase()}</div>
+                </div>
+                <div class="version-item-body">
+                  <div class="version-item-date">Soumis le ${lbl}</div>
+                  <div class="version-item-meta">${formatDate(v.date, v.time)}${v.venue ? ' · ' + v.venue : ''}</div>
+                  <div class="version-item-desc">${v.description || ''}</div>
+                  <div class="version-flag-row">${makeFlagHTML(v, true)}</div>
+                </div>
               </div>`;
           }).join('')}
         </div>`;

@@ -8,32 +8,36 @@
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rubik+Glitch&family=Rubik+Dirt&family=Bungee&family=Metal+Mania&family=Orbitron:wght@700&family=VT323&family=Bebas+Neue&family=Creepster&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0a0a0f;
-      --surface: #111118;
-      --surface2: #1a1a24;
-      --border: #2a2a3a;
-      --text: #e0e0f0;
-      --muted: #6b6b8a;
-      --neon: #9b5cf6;
-      --neon-glow: rgba(155, 92, 246, 0.4);
-      --cyan: #06b6d4;
+      --bg: #0a0a0f; --surface: #111118; --surface2: #1a1a24;
+      --border: #2a2a3a; --text: #e0e0f0; --muted: #6b6b8a;
+      --neon: #9b5cf6; --neon-glow: rgba(155,92,246,0.4); --cyan: #06b6d4;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; padding-bottom: 60px; }
-    .page { max-width: 600px; margin: 0 auto; padding: 20px; }
-    .back-link { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); text-decoration: none; font-size: 0.85rem; margin-bottom: 24px; transition: color 0.2s; }
+    .page { max-width: 640px; margin: 0 auto; padding: 20px; }
+    .back-link { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); text-decoration: none; font-size: 0.85rem; margin-bottom: 20px; transition: color 0.2s; }
     .back-link:hover { color: var(--text); }
     h1 { font-size: 1.8rem; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 4px; }
-    .page-sub { color: var(--muted); font-size: 0.85rem; margin-bottom: 24px; }
-    .page-sub a { color: var(--neon); text-decoration: none; }
+    .page-sub { color: var(--muted); font-size: 0.85rem; margin-bottom: 20px; }
 
-    /* PREVIEW */
-    .preview-card { border-radius: 12px; overflow: hidden; border: 1px solid var(--border); margin-bottom: 28px; }
-    .preview-visual { height: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px; background: var(--surface2); transition: background 0.3s; position: relative; overflow: hidden; }
-    .preview-visual::before { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.45); }
-    .preview-name { font-size: 1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; text-align: center; z-index: 1; line-height: 1.2; transition: font-family 0.2s; }
-    .preview-cat { font-size: 0.65rem; font-weight: 600; letter-spacing: 2px; z-index: 1; margin-top: 6px; opacity: 0.85; }
-    .preview-meta { background: var(--surface); padding: 10px 14px; font-size: 0.8rem; color: var(--muted); display: flex; justify-content: space-between; }
+    /* UPDATE BANNER */
+    .update-banner { display: none; align-items: center; gap: 14px; background: rgba(6,182,212,0.08); border: 1.5px solid rgba(6,182,212,0.4); border-radius: 12px; padding: 14px 18px; margin-bottom: 20px; }
+    .update-star { font-size: 2.2rem; line-height: 1; flex-shrink: 0; animation: spin 4s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .update-text strong { display: block; font-size: 0.95rem; color: var(--cyan); margin-bottom: 3px; }
+    .update-text span { font-size: 0.8rem; color: var(--muted); }
+
+    /* STICKY PREVIEW */
+    .preview-sticky-wrap { position: sticky; top: 0; z-index: 20; background: var(--bg); padding-bottom: 12px; margin-bottom: 8px; }
+    .preview-card { border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
+    .preview-visual { height: 110px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px; background: var(--surface2); transition: background 0.3s; position: relative; overflow: hidden; }
+    .preview-visual::before { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.42); }
+    .preview-name { font-size: 1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; text-align: center; z-index: 1; line-height: 1.2; color: #fff; transition: font-family 0.2s, color 0.2s; paint-order: stroke fill; }
+    .preview-cat { font-size: 0.62rem; font-weight: 600; letter-spacing: 2px; z-index: 1; margin-top: 5px; opacity: 0.85; }
+    .preview-price-badge { position: absolute; bottom: 8px; right: 10px; z-index: 2; font-size: 0.65rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: rgba(0,0,0,0.55); color: #fff; backdrop-filter: blur(4px); }
+    .preview-price-badge.free { color: #10b981; }
+    .preview-price-badge.pwyc { color: var(--cyan); }
+    .preview-meta { background: var(--surface); padding: 9px 14px; font-size: 0.78rem; color: var(--muted); display: flex; justify-content: space-between; }
     .preview-pool-tag { font-size: 0.65rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: rgba(155,92,246,0.15); color: var(--neon); border: 1px solid rgba(155,92,246,0.3); }
 
     /* FORM */
@@ -41,24 +45,36 @@
     label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 8px; color: var(--text); }
     label .req { color: var(--neon); }
     label .opt { color: var(--muted); font-weight: 400; font-size: 0.8rem; }
-
-    input[type="text"], input[type="date"], input[type="url"], select, textarea {
-      width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
-      padding: 12px 14px; color: var(--text); font-size: 0.9rem; font-family: inherit; outline: none; transition: border-color 0.2s;
-      -webkit-appearance: none; appearance: none;
-    }
+    input[type="text"], input[type="date"], input[type="url"], select, textarea { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; color: var(--text); font-size: 0.9rem; font-family: inherit; outline: none; transition: border-color 0.2s; -webkit-appearance: none; appearance: none; }
     input:focus, select:focus, textarea:focus { border-color: var(--neon); }
     input::placeholder, textarea::placeholder { color: var(--muted); }
     textarea { resize: vertical; min-height: 90px; }
     select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b6b8a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; cursor: pointer; }
 
-    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    @media (max-width: 500px) { .row-2 { grid-template-columns: 1fr; } }
+    /* MINI CALENDAR */
+    .mini-cal { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 10px; }
+    .cal-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border-bottom: 1px solid var(--border); }
+    .cal-nav { background: transparent; border: none; color: var(--muted); cursor: pointer; font-size: 1.2rem; padding: 4px 10px; border-radius: 6px; font-family: inherit; line-height: 1; }
+    .cal-nav:hover { color: var(--text); background: var(--surface2); }
+    .cal-month-label { font-size: 0.9rem; font-weight: 700; }
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; padding: 8px; }
+    .cal-day-hdr { text-align: center; font-size: 0.62rem; font-weight: 700; color: var(--muted); padding: 4px 2px; letter-spacing: 0.5px; }
+    .cal-day { text-align: center; padding: 7px 2px; font-size: 0.82rem; cursor: pointer; border-radius: 6px; transition: background 0.12s; user-select: none; }
+    .cal-day:hover:not(.empty):not(.past) { background: var(--surface2); }
+    .cal-day.selected { background: var(--neon); color: #fff; font-weight: 700; }
+    .cal-day.today:not(.selected) { color: var(--neon); font-weight: 700; box-shadow: inset 0 0 0 1.5px var(--neon); }
+    .cal-day.past { opacity: 0.3; cursor: not-allowed; }
+    .cal-day.empty { cursor: default; }
+    /* SELECTED DATES LIST */
+    .sel-date-row { display: grid; grid-template-columns: 1fr 110px 34px; gap: 8px; align-items: center; margin-bottom: 8px; }
+    .sel-date-label { font-size: 0.82rem; color: var(--text); padding: 0 2px; }
+    .remove-sel-btn { width: 34px; height: 42px; background: transparent; border: 1px solid var(--border); border-radius: 8px; color: var(--muted); cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; transition: all 0.15s; font-family: inherit; }
+    .remove-sel-btn:hover { border-color: #ef4444; color: #ef4444; }
+    .cal-hint { font-size: 0.75rem; color: var(--muted); padding: 4px 2px 8px; }
 
     /* CHIPS */
     .chips { display: flex; flex-wrap: wrap; gap: 8px; }
-    .chip { padding: 6px 14px; border-radius: 999px; font-size: 0.82rem; font-weight: 600; cursor: pointer; border: 1.5px solid var(--border); background: transparent; color: var(--muted); transition: all 0.15s; }
-    .chip.selected { color: #fff; }
+    .chip { padding: 6px 14px; border-radius: 999px; font-size: 0.82rem; font-weight: 600; cursor: pointer; border: 1.5px solid var(--border); background: transparent; color: var(--muted); transition: all 0.15s; font-family: inherit; }
 
     /* PRICE */
     .price-toggle { display: flex; gap: 8px; flex-wrap: wrap; }
@@ -66,37 +82,48 @@
     .price-btn.selected { border-color: var(--cyan); color: var(--cyan); background: rgba(6,182,212,0.1); }
     .price-detail { margin-top: 10px; }
 
-    /* COLOR PICKER */
-    .color-swatches { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-    .swatch { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: all 0.15s; flex-shrink: 0; }
-    .swatch.selected { border-color: #fff; transform: scale(1.15); }
-    .swatch-custom { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border); background: transparent; cursor: pointer; overflow: hidden; padding: 0; position: relative; }
-    .swatch-custom input[type="color"] { position: absolute; inset: -4px; width: calc(100% + 8px); height: calc(100% + 8px); cursor: pointer; opacity: 0; }
-    .swatch-custom-icon { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; pointer-events: none; }
-    .swatch-cat { font-size: 0.78rem; color: var(--muted); padding: 6px 12px; border-radius: 999px; border: 1.5px solid var(--border); cursor: pointer; transition: all 0.15s; }
-    .swatch-cat.selected { border-color: var(--neon); color: var(--neon); background: rgba(155,92,246,0.1); }
-
-    /* FONT PICKER */
-    .font-options { display: flex; flex-direction: column; gap: 8px; }
-    .font-option { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: var(--surface); border: 1.5px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.15s; }
-    .font-option.selected { border-color: var(--neon); background: rgba(155,92,246,0.08); }
-    .font-preview { font-size: 1.1rem; flex: 1; letter-spacing: 0.5px; }
-    .font-label { font-size: 0.72rem; color: var(--muted); white-space: nowrap; }
-
     /* SUBCAT */
     .subcat-section { margin-top: 12px; display: none; }
     .subcat-section.visible { display: block; }
     .subcat-label { font-size: 0.78rem; color: var(--muted); margin-bottom: 8px; }
 
-    /* DIVIDER */
-    .divider { height: 1px; background: var(--border); margin: 28px 0; }
+    /* GRADIENT MODE */
+    .grad-mode-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+    .gmode-btn { padding: 6px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; cursor: pointer; border: 1.5px solid var(--border); background: transparent; color: var(--muted); transition: all 0.15s; font-family: inherit; }
+    .gmode-btn.selected { border-color: var(--neon); color: var(--neon); background: rgba(155,92,246,0.1); }
 
-    /* SUBMIT */
+    /* COLOR PICKERS */
+    .color-picker-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+    .clr-label { font-size: 0.78rem; color: var(--muted); white-space: nowrap; min-width: 60px; }
+    .clr-presets { display: flex; gap: 6px; flex-wrap: wrap; }
+    .clr-swatch { width: 26px; height: 26px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: all 0.15s; flex-shrink: 0; }
+    .clr-swatch:hover, .clr-swatch.selected { border-color: #fff; transform: scale(1.15); }
+    .clr-custom { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--border); background: transparent; cursor: pointer; padding: 0; -webkit-appearance: none; appearance: none; flex-shrink: 0; }
+    .clr-custom::-webkit-color-swatch-wrapper { padding: 0; }
+    .clr-custom::-webkit-color-swatch { border: none; border-radius: 50%; }
+    .clr-custom:disabled { opacity: 0.3; cursor: not-allowed; }
+
+    /* FONT */
+    .font-options { display: flex; flex-direction: column; gap: 6px; }
+    .font-option { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: var(--surface); border: 1.5px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.15s; }
+    .font-option.selected { border-color: var(--neon); background: rgba(155,92,246,0.08); }
+    .font-preview { font-size: 1.1rem; flex: 1; letter-spacing: 0.5px; }
+    .font-label { font-size: 0.72rem; color: var(--muted); white-space: nowrap; }
+
+    /* FONT EFFECTS */
+    .effect-section { margin-top: 14px; background: var(--surface2); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+    .effect-row { display: flex; align-items: center; gap: 10px; }
+    .effect-label { font-size: 0.8rem; color: var(--muted); flex: 1; }
+    .effect-check { display: flex; align-items: center; gap: 8px; flex: 1; cursor: pointer; }
+    .effect-check input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--neon); cursor: pointer; flex-shrink: 0; }
+    .effect-check span { font-size: 0.8rem; color: var(--muted); }
+
+    .divider { height: 1px; background: var(--border); margin: 28px 0; }
     .submit-btn { width: 100%; padding: 16px; background: var(--text); color: var(--bg); border: none; border-radius: 10px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: opacity 0.2s; font-family: inherit; }
     .submit-btn:hover { opacity: 0.9; }
+    .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
     .submit-note { text-align: center; font-size: 0.75rem; color: var(--muted); margin-top: 10px; }
 
-    /* SUCCESS */
     .success-screen { display: none; text-align: center; padding: 60px 20px; }
     .success-screen.visible { display: block; }
     .success-icon { font-size: 3rem; margin-bottom: 16px; }
@@ -104,127 +131,183 @@
     .success-sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 28px; }
     .back-btn { display: inline-block; padding: 12px 28px; background: var(--neon); color: #fff; border-radius: 8px; text-decoration: none; font-weight: 700; box-shadow: 0 0 24px var(--neon-glow); }
 
-    /* ERROR */
     .error-box { display: none; background: rgba(239,68,68,0.1); border: 1px solid #ef4444; border-radius: 8px; padding: 12px; margin-bottom: 12px; font-size: 0.82rem; color: #ef4444; word-break: break-all; }
+
+    @media (min-width: 900px) {
+      .page { max-width: 960px; }
+      #form-section { display: grid; grid-template-columns: 300px 1fr; gap: 0 32px; }
+      .form-header { grid-column: 1 / -1; }
+      .update-banner { grid-column: 1 / -1; }
+      .preview-sticky-wrap { position: sticky; top: 20px; align-self: start; }
+    }
   </style>
 </head>
 <body>
 <div class="page">
-  <a href="index.html" class="back-link">← Retour au Pool</a>
+  <a href="index.html" class="back-link">&#8592; Retour au Pool</a>
 
   <div id="form-section">
-    <h1>Garoche ton event</h1>
-    <p class="page-sub">Tout le monde équitable — <a href="#">zéro cash</a>, <a href="#">zéro gatekeeping</a></p>
+    <div class="form-header">
+      <h1 id="form-title">Garoche ton event</h1>
+      <p class="page-sub">Tout le monde equitable &mdash; zero cash, zero gatekeeping</p>
+    </div>
 
-    <!-- PREVIEW -->
-    <div class="preview-card">
-      <div class="preview-visual" id="preview-visual">
-        <div class="preview-name" id="preview-name">Nom de ton event...</div>
-        <div class="preview-cat" id="preview-cat">Catégorie</div>
-      </div>
-      <div class="preview-meta">
-        <span id="preview-meta">Date · Lieu</span>
-        <span class="preview-pool-tag">Pool</span>
+    <div class="update-banner" id="update-banner">
+      <div class="update-star">&#10035;</div>
+      <div class="update-text">
+        <strong>MODE MISE &Agrave; JOUR</strong>
+        <span>Cette soumission sera group&eacute;e avec l&rsquo;event existant.</span>
       </div>
     </div>
 
-    <!-- NOM -->
-    <div class="form-group">
-      <label>Nom de l'event <span class="req">*</span></label>
-      <input type="text" id="f-name" placeholder="Ex: Nuit Fluorescente vol.3" />
-    </div>
-
-    <!-- CATÉGORIE -->
-    <div class="form-group">
-      <label>Catégorie <span class="req">*</span></label>
-      <div class="chips" id="cats"></div>
-      <div class="subcat-section" id="subcat-section">
-        <div class="subcat-label">Sous-genre <span style="opacity:0.5">(optionnel)</span></div>
-        <div class="chips" id="subcats"></div>
-      </div>
-    </div>
-
-    <!-- DATE + HEURE -->
-    <div class="row-2">
-      <div class="form-group">
-        <label>Date <span class="req">*</span></label>
-        <input type="date" id="f-date" />
-      </div>
-      <div class="form-group">
-        <label>Heure <span class="req">*</span></label>
-        <select id="f-time"></select>
-      </div>
-    </div>
-
-    <!-- LIEU -->
-    <div class="form-group">
-      <label>Salle / Lieu <span class="req">*</span></label>
-      <input type="text" id="f-venue" placeholder="Bar, salle, adresse..." list="venues-list" />
-      <datalist id="venues-list"></datalist>
-    </div>
-
-    <!-- PRIX -->
-    <div class="form-group">
-      <label>Prix</label>
-      <div class="price-toggle">
-        <button class="price-btn selected" data-price="gratuit">Gratuit</button>
-        <button class="price-btn" data-price="pwyc">PWYC</button>
-        <button class="price-btn" data-price="payant">Payant</button>
-      </div>
-      <div class="price-detail" id="price-detail" style="display:none;">
-        <input type="text" id="f-price" placeholder="Ex: 10$, PAP, membres seulement..." />
-      </div>
-    </div>
-
-    <!-- DESCRIPTION -->
-    <div class="form-group">
-      <label>Description <span class="req">*</span></label>
-      <textarea id="f-desc" placeholder="Ambiance, lineup, infos importantes..."></textarea>
-    </div>
-
-    <!-- SOURCE -->
-    <div class="form-group">
-      <label>Lien source <span class="opt">(optionnel — https seulement)</span></label>
-      <input type="url" id="f-source" placeholder="https://facebook.com/events/..." />
-    </div>
-
-    <!-- VIGNETTE COLOR -->
-    <div class="form-group">
-      <label>Couleur de la vignette <span class="opt">(optionnel)</span></label>
-      <div class="color-swatches" id="color-swatches">
-        <button class="swatch-cat selected" id="swatch-cat-btn">Couleur du genre</button>
-        <div class="swatch" data-color="#9b5cf6" style="background:#9b5cf6;" title="Violet"></div>
-        <div class="swatch" data-color="#ec4899" style="background:#ec4899;" title="Rose"></div>
-        <div class="swatch" data-color="#06b6d4" style="background:#06b6d4;" title="Cyan"></div>
-        <div class="swatch" data-color="#10b981" style="background:#10b981;" title="Vert"></div>
-        <div class="swatch" data-color="#f59e0b" style="background:#f59e0b;" title="Ambre"></div>
-        <div class="swatch" data-color="#ef4444" style="background:#ef4444;" title="Rouge"></div>
-        <div class="swatch" data-color="#1e1e2e" style="background:#1e1e2e;border:1px solid #444;" title="Noir profond"></div>
-        <div class="swatch" data-color="#ffffff" style="background:#fff;" title="Blanc"></div>
-        <div class="swatch-custom" title="Couleur personnalisée">
-          <input type="color" id="f-color-custom" value="#9b5cf6" />
-          <div class="swatch-custom-icon">🎨</div>
+    <div class="preview-sticky-wrap">
+      <div class="preview-card">
+        <div class="preview-visual" id="preview-visual">
+          <div class="preview-name" id="preview-name">Nom de ton event...</div>
+          <div class="preview-cat" id="preview-cat">Cat&eacute;gorie</div>
+          <div class="preview-price-badge" id="preview-price-badge"></div>
+        </div>
+        <div class="preview-meta">
+          <span id="preview-meta">Date &middot; Lieu</span>
+          <span class="preview-pool-tag">Pool</span>
         </div>
       </div>
     </div>
 
-    <!-- FONT -->
-    <div class="form-group">
-      <label>Police du titre <span class="opt">(optionnel)</span></label>
-      <div class="font-options" id="font-options"></div>
-    </div>
+    <div class="form-col">
 
-    <div class="divider"></div>
-    <div class="error-box" id="error-box"><strong>Erreur :</strong> <span id="error-msg"></span></div>
-    <button class="submit-btn" id="submit-btn">Garoche dans le Pool</button>
-    <!-- disclaimer placeholder -->
-    <p class="submit-note" id="submit-note">Ton event sera visible immédiatement.</p>
+      <div class="form-group">
+        <label>Nom de l&rsquo;event <span class="req">*</span></label>
+        <input type="text" id="f-name" placeholder="Ex: Nuit Fluorescente vol.3" />
+      </div>
+
+      <div class="form-group">
+        <label>Cat&eacute;gorie <span class="req">*</span></label>
+        <div class="chips" id="cats"></div>
+        <div class="subcat-section" id="subcat-section">
+          <div class="subcat-label">Sous-genre <span style="opacity:0.5">(optionnel)</span></div>
+          <div class="chips" id="subcats"></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Date(s) &amp; heure <span class="req">*</span></label>
+        <div class="mini-cal" id="mini-cal">
+          <div class="cal-header">
+            <button type="button" class="cal-nav" id="cal-prev">&#8249;</button>
+            <span class="cal-month-label" id="cal-month-label"></span>
+            <button type="button" class="cal-nav" id="cal-next">&#8250;</button>
+          </div>
+          <div class="cal-grid" id="cal-grid"></div>
+        </div>
+        <div class="cal-hint">Appuie sur les dates pour les s&eacute;lectionner.</div>
+        <div id="selected-dates-list"></div>
+      </div>
+
+      <div class="form-group">
+        <label>Salle / Lieu <span class="req">*</span></label>
+        <input type="text" id="f-venue" placeholder="Bar, salle, adresse..." list="venues-list" />
+        <datalist id="venues-list"></datalist>
+      </div>
+
+      <div class="form-group">
+        <label>Prix</label>
+        <div class="price-toggle">
+          <button class="price-btn selected" data-price="gratuit">Gratuit</button>
+          <button class="price-btn" data-price="pwyc">PWYC</button>
+          <button class="price-btn" data-price="payant">Payant</button>
+        </div>
+        <div class="price-detail" id="price-detail" style="display:none;">
+          <input type="text" id="f-price" placeholder="Ex: 10$, PAP, membres seulement..." />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Description <span class="req">*</span></label>
+        <textarea id="f-desc" placeholder="Ambiance, lineup, infos importantes..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Lien source <span class="opt">(optionnel &mdash; https seulement)</span></label>
+        <input type="url" id="f-source" placeholder="https://facebook.com/events/..." />
+      </div>
+
+      <div class="form-group">
+        <label>Fond de la vignette <span class="opt">(optionnel)</span></label>
+        <div class="grad-mode-tabs" id="grad-mode-tabs">
+          <button class="gmode-btn selected" data-mode="genre">Genre</button>
+          <button class="gmode-btn" data-mode="solid">&#9632; Solide</button>
+          <button class="gmode-btn" data-mode="horizontal">&#8594; Horizontal</button>
+          <button class="gmode-btn" data-mode="vertical">&#8595; Vertical</button>
+          <button class="gmode-btn" data-mode="radial">&#9678; Radial</button>
+          <button class="gmode-btn" data-mode="conic">&#8857; Circulaire</button>
+        </div>
+        <div id="color-controls" style="display:none;">
+          <div class="color-picker-row">
+            <span class="clr-label">Couleur 1</span>
+            <div class="clr-presets">
+              <div class="clr-swatch" data-ci="1" data-color="#9b5cf6" style="background:#9b5cf6"></div>
+              <div class="clr-swatch" data-ci="1" data-color="#ec4899" style="background:#ec4899"></div>
+              <div class="clr-swatch" data-ci="1" data-color="#06b6d4" style="background:#06b6d4"></div>
+              <div class="clr-swatch" data-ci="1" data-color="#10b981" style="background:#10b981"></div>
+              <div class="clr-swatch" data-ci="1" data-color="#f59e0b" style="background:#f59e0b"></div>
+              <div class="clr-swatch" data-ci="1" data-color="#ef4444" style="background:#ef4444"></div>
+              <div class="clr-swatch" data-ci="1" data-color="#1e1e2e" style="background:#1e1e2e;border:1px solid #555"></div>
+              <div class="clr-swatch" data-ci="1" data-color="#ffffff" style="background:#fff"></div>
+            </div>
+            <input type="color" id="f-color1" value="#9b5cf6" class="clr-custom">
+          </div>
+          <div class="color-picker-row" id="c2-row" style="display:none;">
+            <span class="clr-label">Couleur 2</span>
+            <div class="clr-presets">
+              <div class="clr-swatch" data-ci="2" data-color="#0a0a0f" style="background:#0a0a0f;border:1px solid #555"></div>
+              <div class="clr-swatch" data-ci="2" data-color="#1e1e2e" style="background:#1e1e2e;border:1px solid #555"></div>
+              <div class="clr-swatch" data-ci="2" data-color="#9b5cf6" style="background:#9b5cf6"></div>
+              <div class="clr-swatch" data-ci="2" data-color="#ec4899" style="background:#ec4899"></div>
+              <div class="clr-swatch" data-ci="2" data-color="#06b6d4" style="background:#06b6d4"></div>
+              <div class="clr-swatch" data-ci="2" data-color="#ffffff" style="background:#fff"></div>
+            </div>
+            <input type="color" id="f-color2" value="#0a0a0f" class="clr-custom">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Police du titre <span class="opt">(optionnel)</span></label>
+        <div class="font-options" id="font-options"></div>
+        <div class="effect-section">
+          <div class="effect-row">
+            <span class="effect-label">Couleur du texte</span>
+            <input type="color" id="f-font-color" value="#ffffff" class="clr-custom">
+          </div>
+          <div class="effect-row">
+            <label class="effect-check">
+              <input type="checkbox" id="f-edge-enable">
+              <span>Contour (Edge)</span>
+            </label>
+            <input type="color" id="f-edge-color" value="#000000" class="clr-custom" disabled>
+          </div>
+          <div class="effect-row">
+            <label class="effect-check">
+              <input type="checkbox" id="f-shadow-enable">
+              <span>Ombre port&eacute;e</span>
+            </label>
+            <input type="color" id="f-shadow-color" value="#000000" class="clr-custom" disabled>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="error-box" id="error-box"><strong>Erreur :</strong> <span id="error-msg"></span></div>
+      <button class="submit-btn" id="submit-btn">Garoche dans le Pool</button>
+      <p class="submit-note" id="submit-note">Ton event sera visible imm&eacute;diatement.</p>
+    </div>
   </div>
 
   <div class="success-screen" id="success-screen">
-    <div class="success-icon">🌊</div>
-    <div class="success-title">C'est dans le Pool !</div>
-    <div class="success-sub">Ton event est visible immédiatement.<br/>La communauté va le trouver.</div>
+    <div class="success-icon">&#127754;</div>
+    <div class="success-title" id="success-title">C&rsquo;est dans le Pool !</div>
+    <div class="success-sub" id="success-sub">Ton event est visible imm&eacute;diatement.<br/>La communaut&eacute; va le trouver.</div>
     <a href="index.html" class="back-btn">Voir le Pool</a>
   </div>
 </div>
@@ -232,367 +315,441 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"></script>
 <script>
-  const CATEGORIES = {
-    'Techno':             { color: '#9b5cf6', subs: ['Industrial', 'Acid', 'Hard Techno', 'Minimal', 'Ambient Techno', 'Dub Techno'] },
-    'Électro':            { color: '#06b6d4', subs: ['House', 'Deep House', 'Tech House', 'Synthwave', 'EBM', 'Trance', 'Ambient'] },
-    'Drum n Bass':        { color: '#a78bfa', subs: ['Liquid', 'Neurofunk', 'Jump Up', 'Ragga DnB', 'Jungle', 'Dubstep', 'Halftime'] },
-    'Rave':               { color: '#ec4899', subs: ['Old School', 'Happy Hardcore', 'Gabber', 'UK Hardcore'] },
-    'Hip-Hop':            { color: '#ef4444', subs: ['Rap', 'Trap', 'Boom Bap', 'R&B', 'Neo Soul', 'Spoken Word'] },
-    'Punk':               { color: '#84cc16', subs: ['Hardcore', 'Oi!', 'Post-Punk', 'Crust', 'Anarcho-Punk', 'Pop-Punk', 'Noise Rock'] },
-    'Metal':              { color: '#64748b', subs: ['Death Metal', 'Black Metal', 'Doom', 'Sludge', 'Thrash', 'Prog Metal', 'Stoner', 'Grindcore'] },
-    'Indie / Rock':       { color: '#10b981', subs: ['Post-Rock', 'Garage', 'Shoegaze', 'Psychédélique', 'Math Rock', 'Grunge', 'Alternative'] },
-    'Jazz':               { color: '#f59e0b', subs: ['Bebop', 'Fusion', 'Nu Jazz', 'Free Jazz', 'Latin Jazz', 'Jazz Manouche'] },
-    'Blues':              { color: '#b45309', subs: ['Chicago Blues', 'Delta Blues', 'Electric Blues', 'Blues Rock'] },
-    'Folk / Chanson':     { color: '#65a30d', subs: ['Singer-Songwriter', 'Chanson Française', 'Québécois', 'Bluegrass', 'Celtic'] },
-    'Soul / Funk':        { color: '#d97706', subs: ['Soul', 'Funk', 'R&B classique', 'Gospel', 'Afrobeat'] },
-    'Reggae / Ska':       { color: '#16a34a', subs: ['Roots Reggae', 'Dub', 'Ska', 'Rocksteady', 'Dancehall'] },
-    'Classique':          { color: '#94a3b8', subs: ['Orchestral', 'Chambre', 'Opéra', 'Contemporain', 'Baroque'] },
-    'Comedy':             { color: '#f97316', subs: ['Stand-Up', 'Improv', 'Sketch', 'Roast', 'Open Mic Comedy'] },
-    'Théâtre / Perf.':   { color: '#c026d3', subs: ['Théâtre', 'Performance Art', 'Danse', 'Burlesque', 'Cabaret', 'Cirque'] },
-    'Spoken Word':        { color: '#7c3aed', subs: ['Poésie', 'Slam', 'Lecture', 'Conte'] },
-    'Open Mic':           { color: '#fbbf24', subs: ['Musique', 'Poésie', 'Comédie', 'Mixte'] },
-    'Open Jam':           { color: '#34d399', subs: ['Blues Jam', 'Jazz Jam', 'Rock Jam', 'Funk Jam', 'Tout genre'] },
-    'Arts visuels':       { color: '#e879f9', subs: ['Vernissage', 'Exposition', 'Installation', 'Atelier'] },
-    'Expérimental':       { color: '#475569', subs: ['Noise', 'Drone', 'Avant-garde', 'Electroacoustique', 'Musique Concrète'] },
-    'Autre':              { color: '#94a3b8', subs: ['World Music', 'Pop', 'K-Pop', 'Latino', 'Salsa', 'Tango'] },
-  };
+const CATEGORIES = {
+  'Techno':         { color:'#9b5cf6', subs:['Industrial','Acid','Hard Techno','Minimal','Ambient Techno','Dub Techno'] },
+  'Electro':        { color:'#06b6d4', subs:['House','Deep House','Tech House','Synthwave','EBM','Trance','Ambient'] },
+  'Drum n Bass':    { color:'#a78bfa', subs:['Liquid','Neurofunk','Jump Up','Ragga DnB','Jungle','Dubstep','Halftime'] },
+  'Rave':           { color:'#ec4899', subs:['Old School','Happy Hardcore','Gabber','UK Hardcore'] },
+  'Hip-Hop':        { color:'#ef4444', subs:['Rap','Trap','Boom Bap','R&B','Neo Soul','Spoken Word'] },
+  'Punk':           { color:'#84cc16', subs:['Hardcore','Oi!','Post-Punk','Crust','Anarcho-Punk','Pop-Punk','Noise Rock'] },
+  'Metal':          { color:'#64748b', subs:['Death Metal','Black Metal','Doom','Sludge','Thrash','Prog Metal','Stoner','Grindcore'] },
+  'Indie / Rock':   { color:'#10b981', subs:['Post-Rock','Garage','Shoegaze','Psychedelique','Math Rock','Grunge','Alternative'] },
+  'Jazz':           { color:'#f59e0b', subs:['Bebop','Fusion','Nu Jazz','Free Jazz','Latin Jazz','Jazz Manouche'] },
+  'Blues':          { color:'#b45309', subs:['Chicago Blues','Delta Blues','Electric Blues','Blues Rock'] },
+  'Folk / Chanson': { color:'#65a30d', subs:['Singer-Songwriter','Chanson Francaise','Quebecois','Bluegrass','Celtic'] },
+  'Soul / Funk':    { color:'#d97706', subs:['Soul','Funk','R&B classique','Gospel','Afrobeat'] },
+  'Reggae / Ska':   { color:'#16a34a', subs:['Roots Reggae','Dub','Ska','Rocksteady','Dancehall'] },
+  'Classique':      { color:'#94a3b8', subs:['Orchestral','Chambre','Opera','Contemporain','Baroque'] },
+  'Comedy':         { color:'#f97316', subs:['Stand-Up','Improv','Sketch','Roast','Open Mic Comedy'] },
+  'Theatre / Perf.':{ color:'#c026d3', subs:['Theatre','Performance Art','Danse','Burlesque','Cabaret','Cirque'] },
+  'Spoken Word':    { color:'#7c3aed', subs:['Poesie','Slam','Lecture','Conte'] },
+  'Open Mic':       { color:'#fbbf24', subs:['Musique','Poesie','Comedie','Mixte'] },
+  'Open Jam':       { color:'#34d399', subs:['Blues Jam','Jazz Jam','Rock Jam','Funk Jam','Tout genre'] },
+  'Arts visuels':   { color:'#e879f9', subs:['Vernissage','Exposition','Installation','Atelier'] },
+  'Experimental':   { color:'#475569', subs:['Noise','Drone','Avant-garde','Electroacoustique','Musique Concrete'] },
+  'Autre':          { color:'#94a3b8', subs:['World Music','Pop','K-Pop','Latino','Salsa','Tango'] },
+};
 
-  const FONTS = [
-    { id: 'default',        label: 'Clean',          family: 'system-ui, sans-serif',    preview: 'NIGHT POOL' },
-    { id: 'bebas',          label: 'Sharp',          family: "'Bebas Neue', sans-serif", preview: 'NIGHT POOL' },
-    { id: 'orbitron',       label: 'Sci-Fi',         family: "'Orbitron', sans-serif",   preview: 'NIGHT POOL' },
-    { id: 'bungee',         label: 'Eccentric',      family: "'Bungee', sans-serif",     preview: 'NIGHT POOL' },
-    { id: 'metal',          label: 'Metal',          family: "'Metal Mania', cursive",   preview: 'NIGHT POOL' },
-    { id: 'glitch',         label: 'Glitch',         family: "'Rubik Glitch', sans-serif", preview: 'NIGHT POOL' },
-    { id: 'dirty',          label: 'Rusty',          family: "'Rubik Dirt', sans-serif", preview: 'NIGHT POOL' },
-    { id: 'arcade',         label: '8-bit',          family: "'Press Start 2P', monospace", preview: 'POOL' },
-    { id: 'vt323',          label: 'Terminal',       family: "'VT323', monospace",        preview: 'NIGHT POOL' },
-    { id: 'creepster',      label: 'Horror',         family: "'Creepster', cursive",      preview: 'NIGHT POOL' },
-  ];
+const FONTS = [
+  { id:'default',   label:'Clean',     family:'system-ui, sans-serif',        preview:'NIGHT POOL' },
+  { id:'bebas',     label:'Sharp',     family:"'Bebas Neue', sans-serif",      preview:'NIGHT POOL' },
+  { id:'orbitron',  label:'Sci-Fi',    family:"'Orbitron', sans-serif",        preview:'NIGHT POOL' },
+  { id:'bungee',    label:'Eccentric', family:"'Bungee', sans-serif",          preview:'NIGHT POOL' },
+  { id:'metal',     label:'Metal',     family:"'Metal Mania', cursive",        preview:'NIGHT POOL' },
+  { id:'glitch',    label:'Glitch',    family:"'Rubik Glitch', sans-serif",    preview:'NIGHT POOL' },
+  { id:'dirty',     label:'Rusty',     family:"'Rubik Dirt', sans-serif",      preview:'NIGHT POOL' },
+  { id:'arcade',    label:'8-bit',     family:"'Press Start 2P', monospace",   preview:'POOL' },
+  { id:'vt323',     label:'Terminal',  family:"'VT323', monospace",            preview:'NIGHT POOL' },
+  { id:'creepster', label:'Horror',    family:"'Creepster', cursive",          preview:'NIGHT POOL' },
+];
 
-  const SUPABASE_URL = 'https://wgewtmrtrygtroizhaxr.supabase.co';
-  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnZXd0bXJ0cnlndHJvaXpoYXhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNDM5OTAsImV4cCI6MjA5MzgxOTk5MH0.z9Qe-9NezVenudqhE8SU5kPae4cX6_i3cCDH6DpM864';
-  const { createClient } = supabase;
-  const db = createClient(SUPABASE_URL, SUPABASE_KEY);
+const SUPABASE_URL = 'https://wgewtmrtrygtroizhaxr.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnZXd0bXJ0cnlndHJvaXpoYXhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNDM5OTAsImV4cCI6MjA5MzgxOTk5MH0.z9Qe-9NezVenudqhE8SU5kPae4cX6_i3cCDH6DpM864';
+const { createClient } = supabase;
+const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  let selectedCat = '';
-  let selectedSub = '';
-  let selectedPrice = 'gratuit';
-  let selectedColor = null; // null = use category color
-  let selectedFont = 'default';
-  let prefillGroupId = null;
+// STATE
+let selectedCat = '', selectedSub = '', selectedPrice = 'gratuit', selectedFont = 'default';
+let prefillGroupId = null;
+let gradientMode = 'genre', gradientColor1 = '#9b5cf6', gradientColor2 = '#0a0a0f';
+let fontColor = '#ffffff', fontEdgeEnabled = false, fontEdgeColor = '#000000';
+let fontShadowEnabled = false, fontShadowColor = '#000000';
 
-  // Check URL params (for "poster une mise à jour" flow)
-  const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.get('group_id')) {
-    prefillGroupId = urlParams.get('group_id');
-    if (urlParams.get('name')) document.getElementById('f-name').value = urlParams.get('name');
-    document.getElementById('submit-note').textContent = '📝 Mise à jour — sera groupée avec l\'event existant.';
+// HELPERS
+function buildBackground() {
+  const c1 = gradientMode === 'genre'
+    ? (selectedCat ? CATEGORIES[selectedCat].color : '#2a2a3a')
+    : gradientColor1;
+  if (gradientMode === 'genre' || gradientMode === 'solid') return c1;
+  const c2 = gradientColor2;
+  if (gradientMode === 'horizontal') return 'linear-gradient(to right, '+c1+', '+c2+')';
+  if (gradientMode === 'vertical')   return 'linear-gradient(to bottom, '+c1+', '+c2+')';
+  if (gradientMode === 'radial')     return 'radial-gradient(circle at center, '+c1+', '+c2+')';
+  if (gradientMode === 'conic')      return 'conic-gradient(from 0deg, '+c1+', '+c2+', '+c1+')';
+  return c1;
+}
+
+function parseVisualColor(css) {
+  if (!css) return null;
+  const m = css.match(/#[0-9a-fA-F]{3,8}/g) || [];
+  const c1 = m[0] || '#9b5cf6', c2 = m[1] || '#0a0a0f';
+  if (css.startsWith('linear-gradient(to right')) return { mode:'horizontal', c1, c2 };
+  if (css.startsWith('linear-gradient(to bottom')) return { mode:'vertical', c1, c2 };
+  if (css.startsWith('radial-gradient')) return { mode:'radial', c1, c2 };
+  if (css.startsWith('conic-gradient')) return { mode:'conic', c1, c2 };
+  return { mode:'solid', c1:css, c2 };
+}
+
+function getFontFamily() { return FONTS.find(f => f.id === selectedFont)?.family || 'system-ui, sans-serif'; }
+
+function applyTitleStyle() {
+  const el = document.getElementById('preview-name');
+  el.style.fontFamily = getFontFamily();
+  el.style.color = fontColor;
+  el.style.webkitTextStroke = fontEdgeEnabled ? '1.5px '+fontEdgeColor : '';
+  el.style.paintOrder = fontEdgeEnabled ? 'stroke fill' : '';
+  el.style.textShadow = fontShadowEnabled ? '2px 3px 8px '+fontShadowColor : '';
+}
+
+function updatePreview() {
+  const name  = document.getElementById('f-name').value.trim() || 'Nom de ton event...';
+  const venue = document.getElementById('f-venue').value.trim();
+  const catLabel = selectedCat ? (selectedSub ? selectedCat+' · '+selectedSub : selectedCat) : 'Catégorie';
+  const firstKey = Object.keys(selectedDatesMap || {}).sort()[0] || '';
+  const dateVal = firstKey;
+  const timeVal = firstKey ? (selectedDatesMap[firstKey] || '20:00') : '20:00';
+
+  document.getElementById('preview-name').textContent = name;
+  document.getElementById('preview-cat').textContent = catLabel.toUpperCase();
+  document.getElementById('preview-visual').style.background = buildBackground();
+  applyTitleStyle();
+
+  const pb = document.getElementById('preview-price-badge');
+  if (selectedPrice === 'gratuit') { pb.textContent = 'Gratuit'; pb.className = 'preview-price-badge free'; }
+  else if (selectedPrice === 'pwyc') { pb.textContent = 'PWYC'; pb.className = 'preview-price-badge pwyc'; }
+  else { const pv = document.getElementById('f-price')?.value.trim(); pb.textContent = pv || 'Payant'; pb.className = 'preview-price-badge'; }
+
+  let parts = [];
+  if (dateVal) {
+    const d = new Date(dateVal+'T12:00:00');
+    parts.push(d.toLocaleDateString('fr-CA',{weekday:'short',month:'short',day:'numeric'})+(timeVal?' · '+timeVal:''));
   }
+  if (venue) parts.push(venue);
+  document.getElementById('preview-meta').textContent = parts.join(' · ') || 'Date · Lieu';
+}
 
-  // Build time select (30 min increments, default 20:00)
-  const timeEl = document.getElementById('f-time');
-  for (let h = 0; h < 24; h++) {
-    for (let m = 0; m < 60; m += 30) {
-      const val = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
-      const opt = document.createElement('option');
-      opt.value = val;
-      opt.textContent = val;
-      if (val === '20:00') opt.selected = true;
-      timeEl.appendChild(opt);
+// URL PARAMS
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.get('group_id')) {
+  prefillGroupId = urlParams.get('group_id');
+  if (urlParams.get('name')) document.getElementById('f-name').value = urlParams.get('name');
+  document.getElementById('update-banner').style.display = 'flex';
+  document.getElementById('form-title').textContent = '✳ Mise à jour d\'event';
+  document.getElementById('submit-note').textContent = '📝 Mise à jour — sera groupée avec l\'event existant.';
+
+  (async () => {
+    const { data } = await db.from('events')
+      .select('visual_color,font,font_color,font_edge,font_shadow,category,subcat,venue,time')
+      .eq('group_id', prefillGroupId)
+      .order('created_at', { ascending: false }).limit(1);
+    if (!data?.[0]) return;
+    const p = data[0];
+    if (p.font && p.font !== 'default') {
+      selectedFont = p.font;
+      document.querySelectorAll('.font-option').forEach(o => o.classList.toggle('selected', o.dataset.font === p.font));
     }
-  }
-
-  // Load existing venues for datalist
-  async function loadVenues() {
-    const { data } = await db.from('events').select('venue');
-    if (!data) return;
-    const unique = [...new Set(data.map(e => e.venue).filter(Boolean))];
-    const dl = document.getElementById('venues-list');
-    unique.forEach(v => {
-      const opt = document.createElement('option');
-      opt.value = v;
-      dl.appendChild(opt);
-    });
-  }
-  loadVenues();
-
-  // Build category chips
-  const catsEl = document.getElementById('cats');
-  Object.entries(CATEGORIES).forEach(([cat, { color }]) => {
-    const btn = document.createElement('button');
-    btn.className = 'chip';
-    btn.textContent = cat;
-    btn.dataset.cat = cat;
-    btn.addEventListener('click', () => selectCat(cat));
-    catsEl.appendChild(btn);
-  });
-
-  function selectCat(cat) {
-    selectedCat = cat;
-    selectedSub = '';
-    const color = CATEGORIES[cat].color;
-    document.querySelectorAll('#cats .chip').forEach(c => {
-      c.classList.remove('selected');
-      c.style.borderColor = '';
-      c.style.background = '';
-      c.style.color = '';
-    });
-    const active = document.querySelector(`#cats .chip[data-cat="${cat}"]`);
-    active.classList.add('selected');
-    active.style.borderColor = color;
-    active.style.background = color + '22';
-    active.style.color = color;
-
-    const subs = CATEGORIES[cat].subs;
-    const subSection = document.getElementById('subcat-section');
-    const subsEl = document.getElementById('subcats');
-    subsEl.innerHTML = '';
-    if (subs?.length) {
-      subs.forEach(sub => {
-        const btn = document.createElement('button');
-        btn.className = 'chip';
-        btn.textContent = sub;
-        btn.dataset.sub = sub;
-        btn.addEventListener('click', () => selectSub(sub, color));
-        subsEl.appendChild(btn);
-      });
-      subSection.classList.add('visible');
-    } else {
-      subSection.classList.remove('visible');
+    if (p.font_color) { fontColor = p.font_color; document.getElementById('f-font-color').value = p.font_color; }
+    if (p.font_edge) { fontEdgeEnabled = true; fontEdgeColor = p.font_edge; const el = document.getElementById('f-edge-enable'); el.checked = true; document.getElementById('f-edge-color').disabled = false; document.getElementById('f-edge-color').value = p.font_edge; }
+    if (p.font_shadow) { fontShadowEnabled = true; fontShadowColor = p.font_shadow; document.getElementById('f-shadow-enable').checked = true; document.getElementById('f-shadow-color').disabled = false; document.getElementById('f-shadow-color').value = p.font_shadow; }
+    if (p.visual_color) {
+      const parsed = parseVisualColor(p.visual_color);
+      if (parsed) {
+        gradientMode = parsed.mode; gradientColor1 = parsed.c1; gradientColor2 = parsed.c2;
+        document.querySelectorAll('.gmode-btn').forEach(b => b.classList.toggle('selected', b.dataset.mode === parsed.mode));
+        document.getElementById('color-controls').style.display = parsed.mode !== 'genre' ? '' : 'none';
+        document.getElementById('c2-row').style.display = (parsed.mode !== 'genre' && parsed.mode !== 'solid') ? '' : 'none';
+        document.getElementById('f-color1').value = parsed.c1;
+        document.getElementById('f-color2').value = parsed.c2;
+      }
     }
+    if (p.venue) document.getElementById('f-venue').value = p.venue;
+    if (p.category && CATEGORIES[p.category]) {
+      selectCat(p.category);
+      if (p.subcat) setTimeout(() => selectSub(p.subcat, CATEGORIES[p.category].color), 50);
+    }
+    if (p.time && p.date) { selectedDatesMap[p.date] = p.time; renderCalendar(); renderSelectedList(); }
+    else if (p.time) { /* no date to pre-fill, default will be used */ }
     updatePreview();
-  }
+  })();
+}
 
-  function selectSub(sub, color) {
-    selectedSub = sub;
-    document.querySelectorAll('#subcats .chip').forEach(c => {
-      c.classList.remove('selected');
-      c.style.borderColor = '';
-      c.style.background = '';
-      c.style.color = '';
-    });
-    const active = document.querySelector(`#subcats .chip[data-sub="${sub}"]`);
-    active.classList.add('selected');
-    active.style.borderColor = color;
-    active.style.background = color + '22';
-    active.style.color = color;
+// DATES — mini-calendar
+const TIME_OPTIONS = [];
+for (let h = 0; h < 24; h++) for (let m = 0; m < 60; m += 30) TIME_OPTIONS.push(String(h).padStart(2,'0')+':'+String(m).padStart(2,'0'));
+
+const selectedDatesMap = {}; // key: 'YYYY-MM-DD', value: 'HH:MM'
+let calYear, calMonth;
+(function() { const n = new Date(); calYear = n.getFullYear(); calMonth = n.getMonth(); })();
+
+function isoDate(y, m, d) { return y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0'); }
+
+function renderCalendar() {
+  const label = new Date(calYear, calMonth, 1).toLocaleDateString('fr-CA', {month:'long', year:'numeric'});
+  document.getElementById('cal-month-label').textContent = label.charAt(0).toUpperCase()+label.slice(1);
+  const grid = document.getElementById('cal-grid');
+  grid.innerHTML = '';
+  ['Lu','Ma','Me','Je','Ve','Sa','Di'].forEach(d => { const h = document.createElement('div'); h.className='cal-day-hdr'; h.textContent=d; grid.appendChild(h); });
+  const today = new Date(); today.setHours(0,0,0,0);
+  const first = new Date(calYear, calMonth, 1);
+  const startDow = (first.getDay()+6)%7; // Monday=0
+  for (let i = 0; i < startDow; i++) { const e = document.createElement('div'); grid.appendChild(e); }
+  const daysInMonth = new Date(calYear, calMonth+1, 0).getDate();
+  for (let d = 1; d <= daysInMonth; d++) {
+    const cell = document.createElement('div');
+    cell.className = 'cal-day';
+    cell.textContent = d;
+    const key = isoDate(calYear, calMonth, d);
+    const cellDate = new Date(calYear, calMonth, d);
+    if (cellDate < today) { cell.classList.add('past'); }
+    else {
+      if (cellDate.toDateString() === today.toDateString()) cell.classList.add('today');
+      if (selectedDatesMap[key] !== undefined) cell.classList.add('selected');
+      cell.addEventListener('click', () => toggleDate(key));
+    }
+    grid.appendChild(cell);
+  }
+}
+
+function toggleDate(key) {
+  if (selectedDatesMap[key] !== undefined) {
+    delete selectedDatesMap[key];
+  } else {
+    selectedDatesMap[key] = '20:00';
+  }
+  renderCalendar();
+  renderSelectedList();
+  updatePreview();
+}
+
+function makeTimeSelect(def, key) {
+  const sel = document.createElement('select');
+  sel.className = 'sel-date-time';
+  TIME_OPTIONS.forEach(t => { const o = document.createElement('option'); o.value = t; o.textContent = t; if (t === def) o.selected = true; sel.appendChild(o); });
+  sel.addEventListener('change', () => { selectedDatesMap[key] = sel.value; updatePreview(); });
+  return sel;
+}
+
+function renderSelectedList() {
+  const list = document.getElementById('selected-dates-list');
+  list.innerHTML = '';
+  Object.keys(selectedDatesMap).sort().forEach(key => {
+    const row = document.createElement('div');
+    row.className = 'sel-date-row';
+    const lbl = document.createElement('span');
+    lbl.className = 'sel-date-label';
+    const [y,m,d] = key.split('-').map(Number);
+    lbl.textContent = new Date(y, m-1, d).toLocaleDateString('fr-CA',{weekday:'short',month:'short',day:'numeric'});
+    const ts = makeTimeSelect(selectedDatesMap[key], key);
+    const rb = document.createElement('button');
+    rb.type = 'button'; rb.className = 'remove-sel-btn'; rb.textContent = '×';
+    rb.addEventListener('click', () => { delete selectedDatesMap[key]; renderCalendar(); renderSelectedList(); updatePreview(); });
+    row.appendChild(lbl); row.appendChild(ts); row.appendChild(rb);
+    list.appendChild(row);
+  });
+}
+
+document.getElementById('cal-prev').addEventListener('click', () => { calMonth--; if(calMonth<0){calMonth=11;calYear--;} renderCalendar(); });
+document.getElementById('cal-next').addEventListener('click', () => { calMonth++; if(calMonth>11){calMonth=0;calYear++;} renderCalendar(); });
+renderCalendar();
+
+// VENUES
+(async () => {
+  const { data } = await db.from('events').select('venue');
+  if (!data) return;
+  const dl = document.getElementById('venues-list');
+  [...new Set(data.map(e => e.venue).filter(Boolean))].forEach(v => { const o = document.createElement('option'); o.value = v; dl.appendChild(o); });
+})();
+
+// CATEGORY CHIPS
+Object.entries(CATEGORIES).forEach(([cat, { color }]) => {
+  const btn = document.createElement('button');
+  btn.className = 'chip'; btn.type = 'button'; btn.textContent = cat; btn.dataset.cat = cat;
+  btn.addEventListener('click', () => selectCat(cat));
+  document.getElementById('cats').appendChild(btn);
+});
+
+function selectCat(cat) {
+  selectedCat = cat; selectedSub = '';
+  const color = CATEGORIES[cat].color;
+  document.querySelectorAll('#cats .chip').forEach(c => {
+    const a = c.dataset.cat === cat;
+    c.classList.toggle('selected', a);
+    c.style.cssText = a ? 'border-color:'+color+';background:'+color+'22;color:'+color : '';
+  });
+  const subs = CATEGORIES[cat].subs || [];
+  const subSec = document.getElementById('subcat-section');
+  const subsEl = document.getElementById('subcats'); subsEl.innerHTML = '';
+  if (subs.length) {
+    subs.forEach(sub => { const b = document.createElement('button'); b.className='chip'; b.type='button'; b.textContent=sub; b.dataset.sub=sub; b.addEventListener('click',()=>selectSub(sub,color)); subsEl.appendChild(b); });
+    subSec.classList.add('visible');
+  } else { subSec.classList.remove('visible'); }
+  updatePreview();
+}
+
+function selectSub(sub, color) {
+  selectedSub = sub;
+  document.querySelectorAll('#subcats .chip').forEach(c => { const a = c.dataset.sub===sub; c.classList.toggle('selected',a); c.style.cssText = a ? 'border-color:'+color+';background:'+color+'22;color:'+color : ''; });
+  updatePreview();
+}
+
+// PRICE
+document.querySelectorAll('.price-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.price-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected'); selectedPrice = btn.dataset.price;
+    document.getElementById('price-detail').style.display = selectedPrice==='payant' ? 'block' : 'none';
     updatePreview();
-  }
-
-  // Price toggle
-  document.querySelectorAll('.price-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.price-btn').forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
-      selectedPrice = btn.dataset.price;
-      document.getElementById('price-detail').style.display = selectedPrice === 'payant' ? 'block' : 'none';
-    });
   });
+});
+document.getElementById('f-price')?.addEventListener('input', updatePreview);
 
-  // Color swatches
-  document.querySelectorAll('.swatch').forEach(sw => {
-    sw.addEventListener('click', () => {
-      document.querySelectorAll('.swatch').forEach(s => s.classList.remove('selected'));
-      document.getElementById('swatch-cat-btn').classList.remove('selected');
-      sw.classList.add('selected');
-      selectedColor = sw.dataset.color;
-      updatePreview();
-    });
-  });
-
-  document.getElementById('swatch-cat-btn').addEventListener('click', () => {
-    document.querySelectorAll('.swatch').forEach(s => s.classList.remove('selected'));
-    document.getElementById('swatch-cat-btn').classList.add('selected');
-    selectedColor = null;
+// GRADIENT MODES
+document.querySelectorAll('.gmode-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.gmode-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected'); gradientMode = btn.dataset.mode;
+    document.getElementById('color-controls').style.display = gradientMode !== 'genre' ? '' : 'none';
+    document.getElementById('c2-row').style.display = (gradientMode !== 'genre' && gradientMode !== 'solid') ? '' : 'none';
     updatePreview();
   });
+});
 
-  document.getElementById('f-color-custom').addEventListener('input', function() {
-    document.querySelectorAll('.swatch').forEach(s => s.classList.remove('selected'));
-    document.getElementById('swatch-cat-btn').classList.remove('selected');
-    selectedColor = this.value;
+document.querySelectorAll('.clr-swatch').forEach(sw => {
+  sw.addEventListener('click', () => {
+    const ci = sw.dataset.ci, color = sw.dataset.color;
+    if (ci === '1') { gradientColor1 = color; document.getElementById('f-color1').value = color; document.querySelectorAll('[data-ci="1"]').forEach(s => s.classList.toggle('selected', s===sw)); }
+    else { gradientColor2 = color; document.getElementById('f-color2').value = color; document.querySelectorAll('[data-ci="2"]').forEach(s => s.classList.toggle('selected', s===sw)); }
     updatePreview();
   });
+});
+document.getElementById('f-color1').addEventListener('input', function() { gradientColor1=this.value; document.querySelectorAll('[data-ci="1"]').forEach(s=>s.classList.remove('selected')); updatePreview(); });
+document.getElementById('f-color2').addEventListener('input', function() { gradientColor2=this.value; document.querySelectorAll('[data-ci="2"]').forEach(s=>s.classList.remove('selected')); updatePreview(); });
 
-  // Font options
-  const fontEl = document.getElementById('font-options');
-  FONTS.forEach(f => {
-    const div = document.createElement('div');
-    div.className = 'font-option' + (f.id === 'default' ? ' selected' : '');
-    div.dataset.font = f.id;
-    div.innerHTML = `<span class="font-preview" style="font-family:${f.family}">${f.preview}</span><span class="font-label">${f.label}</span>`;
-    div.addEventListener('click', () => {
-      document.querySelectorAll('.font-option').forEach(o => o.classList.remove('selected'));
-      div.classList.add('selected');
-      selectedFont = f.id;
-      updatePreview();
-    });
-    fontEl.appendChild(div);
-  });
+// FONT OPTIONS
+const fontEl = document.getElementById('font-options');
+FONTS.forEach(f => {
+  const div = document.createElement('div');
+  div.className = 'font-option'+(f.id==='default'?' selected':''); div.dataset.font = f.id;
+  div.innerHTML = '<span class="font-preview" style="font-family:'+f.family+'">'+f.preview+'</span><span class="font-label">'+f.label+'</span>';
+  div.addEventListener('click', () => { document.querySelectorAll('.font-option').forEach(o=>o.classList.remove('selected')); div.classList.add('selected'); selectedFont=f.id; updatePreview(); });
+  fontEl.appendChild(div);
+});
 
-  // Live preview
-  ['f-name','f-venue'].forEach(id => document.getElementById(id).addEventListener('input', updatePreview));
-  ['f-date','f-time'].forEach(id => document.getElementById(id).addEventListener('change', updatePreview));
+// FONT EFFECTS
+document.getElementById('f-font-color').addEventListener('input', function() { fontColor=this.value; updatePreview(); });
+document.getElementById('f-edge-enable').addEventListener('change', function() { fontEdgeEnabled=this.checked; document.getElementById('f-edge-color').disabled=!this.checked; updatePreview(); });
+document.getElementById('f-edge-color').addEventListener('input', function() { fontEdgeColor=this.value; if(fontEdgeEnabled) updatePreview(); });
+document.getElementById('f-shadow-enable').addEventListener('change', function() { fontShadowEnabled=this.checked; document.getElementById('f-shadow-color').disabled=!this.checked; updatePreview(); });
+document.getElementById('f-shadow-color').addEventListener('input', function() { fontShadowColor=this.value; if(fontShadowEnabled) updatePreview(); });
 
-  function getPreviewColor() {
-    if (selectedColor) return selectedColor;
-    if (selectedCat) return CATEGORIES[selectedCat].color;
-    return '#2a2a3a';
+document.getElementById('f-name').addEventListener('input', updatePreview);
+document.getElementById('f-venue').addEventListener('input', updatePreview);
+
+// UUID FALLBACK
+function randomUUID() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => { const r=Math.random()*16|0; return (c==='x'?r:(r&0x3|0x8)).toString(16); });
+}
+
+// URL VALIDATION
+function sanitizeOnion(text) {
+  return text.replace(/\.?dot\.?onion\b|\[dot\]onion\b|\.onion\b|d0tonion\b|dotonion\b/gi, m => '█'.repeat(m.length));
+}
+
+function isValidSource(url) {
+  if (!url) return true;
+  const low = url.toLowerCase();
+  if (/\.onion\b|dotonion|\[dot\]onion|d0tonion|\.i2p\b/.test(low)) return false;
+  try { const u=new URL(url); return u.protocol==='https:'; } catch { return false; }
+}
+
+// GROUP DETECTION
+async function findGroupId(name, dateStr) {
+  if (prefillGroupId) return prefillGroupId;
+  if (typeof Fuse === 'undefined') return randomUUID();
+  const { data } = await db.from('events').select('id,name,date,group_id');
+  if (!data?.length) return randomUUID();
+  const fuse = new Fuse(data, { keys:['name'], threshold:0.6 });
+  const results = fuse.search(name);
+  const evDate = new Date(dateStr+'T12:00:00');
+  for (const r of results) {
+    const c = r.item;
+    if (Math.abs((evDate-new Date(c.date+'T12:00:00'))/86400000) <= 1) return c.group_id || c.id;
+  }
+  return randomUUID();
+}
+
+// INSERT WITH FALLBACK
+async function insertOne(payload) {
+  const { error } = await db.from('events').insert(payload);
+  if (!error) return null;
+  if (error.message?.includes('column') || error.message?.includes('font') || error.message?.includes('visual')) {
+    const s = Object.assign({}, payload);
+    ['font','visual_color','font_color','font_edge','font_shadow'].forEach(k => delete s[k]);
+    const { error:e2 } = await db.from('events').insert(s);
+    return e2 || null;
+  }
+  return error;
+}
+
+// SUBMIT
+document.getElementById('submit-btn').addEventListener('click', async () => {
+  const name  = sanitizeOnion(document.getElementById('f-name').value.trim());
+  const venue = sanitizeOnion(document.getElementById('f-venue').value.trim());
+  const desc  = sanitizeOnion(document.getElementById('f-desc').value.trim());
+  const source = document.getElementById('f-source').value.trim();
+  document.getElementById('error-box').style.display = 'none';
+
+  const datePairs = Object.entries(selectedDatesMap).sort().map(([date, time]) => ({ date, time }));
+
+  if (!name || !selectedCat || !datePairs.length || !venue || !desc) {
+    document.getElementById('error-msg').textContent = 'Remplis tous les champs obligatoires (*). Au moins une date est requise.';
+    document.getElementById('error-box').style.display = 'block'; return;
+  }
+  if (!isValidSource(source)) {
+    document.getElementById('error-msg').textContent = 'Le lien doit etre en https:// (pas de http, .onion ou .i2p).';
+    document.getElementById('error-box').style.display = 'block'; return;
   }
 
-  function getFontFamily() {
-    return FONTS.find(f => f.id === selectedFont)?.family || 'system-ui, sans-serif';
-  }
+  const btn = document.getElementById('submit-btn');
+  btn.textContent = 'Envoi en cours...'; btn.disabled = true;
 
-  function updatePreview() {
-    const name = document.getElementById('f-name').value.trim() || 'Nom de ton event...';
-    const venue = document.getElementById('f-venue').value.trim();
-    const date = document.getElementById('f-date').value;
-    const time = document.getElementById('f-time').value;
-    const catLabel = selectedCat ? (selectedSub ? `${selectedCat} · ${selectedSub}` : selectedCat) : 'Catégorie';
+  try {
+    const priceVal = selectedPrice==='gratuit' ? 'gratuit' : selectedPrice==='pwyc' ? 'PWYC' : (document.getElementById('f-price').value.trim() || 'payant');
+    const visualColor = gradientMode === 'genre' ? null : buildBackground();
 
-    document.getElementById('preview-name').textContent = name;
-    document.getElementById('preview-name').style.fontFamily = getFontFamily();
-    document.getElementById('preview-cat').textContent = catLabel.toUpperCase();
-    document.getElementById('preview-visual').style.background = getPreviewColor();
-
-    let metaParts = [];
-    if (date) {
-      const d = new Date(date + 'T12:00:00');
-      metaParts.push(d.toLocaleDateString('fr-CA', { weekday: 'short', month: 'short', day: 'numeric' }) + (time ? ' · ' + time : ''));
-    }
-    if (venue) metaParts.push(venue);
-    document.getElementById('preview-meta').textContent = metaParts.join(' · ') || 'Date · Lieu';
-  }
-
-  // UUID fallback
-  function randomUUID() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
-      const r = Math.random() * 16 | 0;
-      return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-    });
-  }
-
-  // URL validation
-  function isValidSource(url) {
-    if (!url) return true;
-    try {
-      const u = new URL(url);
-      if (u.protocol !== 'https:') return false;
-      const host = u.hostname.toLowerCase();
-      if (host.endsWith('.onion')) return false;
-      if (host.endsWith('.i2p')) return false;
-      return true;
-    } catch { return false; }
-  }
-
-  // Duplicate detection
-  async function findGroupId(name, venue, dateStr) {
-    if (prefillGroupId) return prefillGroupId;
-    if (typeof Fuse === 'undefined') return randomUUID();
-
-    const { data } = await db.from('events').select('id, name, venue, date, group_id');
-    if (!data || data.length === 0) return randomUUID();
-
-    const fuse = new Fuse(data, { keys: ['name'], threshold: 0.6, includeScore: true });
-    const results = fuse.search(name);
-    const eventDate = new Date(dateStr + 'T12:00:00');
-
-    for (const result of results) {
-      const c = result.item;
-      const dayDiff = Math.abs((eventDate - new Date(c.date + 'T12:00:00')) / 86400000);
-      if (dayDiff <= 1) return c.group_id || c.id;
-    }
-    return randomUUID();
-  }
-
-  // Submit
-  document.getElementById('submit-btn').addEventListener('click', async () => {
-    const name    = document.getElementById('f-name').value.trim();
-    const dateVal = document.getElementById('f-date').value;
-    const time    = document.getElementById('f-time').value;
-    const venue   = document.getElementById('f-venue').value.trim();
-    const desc    = document.getElementById('f-desc').value.trim();
-    const source  = document.getElementById('f-source').value.trim();
-
-    document.getElementById('error-box').style.display = 'none';
-
-    if (!name || !selectedCat || !dateVal || !venue || !desc) {
-      document.getElementById('error-msg').textContent = 'Remplis tous les champs obligatoires (*).';
-      document.getElementById('error-box').style.display = 'block';
-      return;
-    }
-
-    if (!isValidSource(source)) {
-      document.getElementById('error-msg').textContent = 'Le lien source doit être en https:// (pas de http, pas de .onion).';
-      document.getElementById('error-box').style.display = 'block';
-      return;
-    }
-
-    const btn = document.getElementById('submit-btn');
-    btn.textContent = 'Envoi en cours...';
-    btn.disabled = true;
-
-    try {
-      const priceVal = selectedPrice === 'gratuit' ? 'gratuit'
-        : selectedPrice === 'pwyc' ? 'PWYC'
-        : (document.getElementById('f-price').value.trim() || 'payant');
-
-      let groupId;
-      try { groupId = await findGroupId(name, venue, dateVal); }
-      catch { groupId = randomUUID(); }
-
+    let lastError = null;
+    for (const { date, time } of datePairs) {
+      let groupId; try { groupId = await findGroupId(name, date); } catch { groupId = randomUUID(); }
       const payload = {
         name, category: selectedCat, subcat: selectedSub || null,
-        date: dateVal, time,
-        venue, price: priceVal, description: desc,
-        source: source || null,
-        tab: 'pool', group_id: groupId,
+        date, time, venue, price: priceVal, description: desc,
+        source: source || null, tab: 'pool', group_id: groupId,
         font: selectedFont !== 'default' ? selectedFont : null,
-        visual_color: selectedColor || null,
+        visual_color: visualColor,
+        font_color: fontColor !== '#ffffff' ? fontColor : null,
+        font_edge: fontEdgeEnabled ? fontEdgeColor : null,
+        font_shadow: fontShadowEnabled ? fontShadowColor : null,
       };
-
-      const { error } = await db.from('events').insert(payload);
-      if (error) throw error;
-
-      document.getElementById('form-section').style.display = 'none';
-      document.getElementById('success-screen').classList.add('visible');
-    } catch (e) {
-      // If font/visual_color columns don't exist yet, retry without them
-      if (e?.message?.includes('font') || e?.message?.includes('visual_color')) {
-        try {
-          const priceVal = selectedPrice === 'gratuit' ? 'gratuit'
-            : selectedPrice === 'pwyc' ? 'PWYC'
-            : (document.getElementById('f-price').value.trim() || 'payant');
-          let groupId;
-          try { groupId = await findGroupId(name, document.getElementById('f-venue').value.trim(), dateVal); }
-          catch { groupId = randomUUID(); }
-          const { error: e2 } = await db.from('events').insert({
-            name, category: selectedCat, subcat: selectedSub || null,
-            date: dateVal, time: document.getElementById('f-time').value,
-            venue: document.getElementById('f-venue').value.trim(),
-            price: priceVal, description: document.getElementById('f-desc').value.trim(),
-            source: document.getElementById('f-source').value.trim() || null,
-            tab: 'pool', group_id: groupId,
-          });
-          if (e2) throw e2;
-          document.getElementById('form-section').style.display = 'none';
-          document.getElementById('success-screen').classList.add('visible');
-          return;
-        } catch (e3) {
-          document.getElementById('error-msg').textContent = e3?.message || JSON.stringify(e3);
-        }
-      } else {
-        document.getElementById('error-msg').textContent = e?.message || e?.details || JSON.stringify(e) || 'Erreur inconnue';
-      }
-      document.getElementById('error-box').style.display = 'block';
-      btn.textContent = 'Garoche dans le Pool';
-      btn.disabled = false;
+      const err = await insertOne(payload);
+      if (err) { lastError = err; break; }
     }
-  });
 
-  updatePreview();
+    if (lastError) throw lastError;
+
+    const n = datePairs.length;
+    document.getElementById('form-section').style.display = 'none';
+    document.getElementById('success-title').textContent = n > 1 ? n+' dates dans le Pool !' : "C’est dans le Pool !";
+    document.getElementById('success-sub').innerHTML = n > 1 ? n+' events soumis.<br/>La communauté va les trouver.' : 'Ton event est visible immédiatement.<br/>La communauté va le trouver.';
+    document.getElementById('success-screen').classList.add('visible');
+
+  } catch (e) {
+    document.getElementById('error-msg').textContent = e?.message || e?.details || JSON.stringify(e) || 'Erreur inconnue';
+    document.getElementById('error-box').style.display = 'block';
+    btn.textContent = 'Garoche dans le Pool'; btn.disabled = false;
+  }
+});
+
+updatePreview();
 </script>
 </body>
 </html>
